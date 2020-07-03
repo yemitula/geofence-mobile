@@ -1,5 +1,7 @@
 {
   "name": "geofence-mobile",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

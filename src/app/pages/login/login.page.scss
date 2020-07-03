@@ -1,0 +1,57 @@
+/* Style component 2
+========================================================*/
+
+li {
+  list-style-type: none;
+}
+
+[background-size] {
+  height: 171px;
+  position: relative;
+
+  ion-item {
+    position: absolute;
+    --background: #ffffffb8;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    [text-size-lg] {
+      font-size: 0.9em !important;
+    }
+    ion-button {
+      margin-top: -5px;
+    }
+  }
+}
+/* Settings Accordion "OPEN" */
+
+.item-accordion {
+  max-height: 0;
+  display: block !important;
+  -moz-transition: all 400ms;
+  -ms-transition: all 400ms;
+  -o-transition: all 400ms;
+  -webkit-transition: all 400ms;
+  transition: all 400ms;
+  overflow: hidden;
+
+  ion-item {
+    --background: var(--cs-background-accent) !important;
+    color: var(--cs-text-primary);
+    margin: 4px 0 0;
+  }
+
+  [icon-small] {
+    color: var(--cs-text-primary);
+  }
+
+  &.active {
+    -moz-transition: all 400ms;
+    -ms-transition: all 400ms;
+    -o-transition: all 400ms;
+    -webkit-transition: all 400ms;
+    transition: all 400ms;
+    overflow: visible;
+    max-height: 999px;
+  }
+}

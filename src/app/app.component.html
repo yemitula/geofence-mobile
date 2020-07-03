@@ -1,29 +1,38 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
+  <ion-menu *ngIf="showSidebar">
+    <ion-header background-size
+      [ngStyle]="{'background-image': 'url(' + headerMenuItem.background + ')'}">
+          <ion-item transparent text-center lines="none">
+            <ion-label text-center>
+                <img margin-bottom [src]="'assets/imgs/logo/login.png'">
+                <div clearfix></div>
+                <h2>
+                  {{badge.name}}
+                </h2>
+                <p>{{badge.email}}</p>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
+            </ion-label>
           </ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
+    </ion-header>
+    <ion-content>
+      <ion-grid no-padding>
+        <ion-row no-padding>
+          <ion-col size="12" no-padding>
+            <!-- Menu List -->
+            <ion-list padding-top>
+              <ion-menu-toggle translate auto-hide="false" *ngFor="let p of appPages">
+                <ion-item lines="none" [routerDirection]="'root'" (click)="openPage(p)">
+                  <i icon-small slot="start" class="icon {{p.icon}}"></i>
+                  <ion-label>
+                    <h1 text-size-xs>{{p.title}}</h1>
+                  </ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet main></ion-router-outlet>
 </ion-app>

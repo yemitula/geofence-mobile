@@ -1,0 +1,59 @@
+<!-- Header -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Staff List ({{staff?.length}})
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- Content -->
+<ion-content>
+<!-- GOOGLE CARD --COMPONENT 2 -->
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col class="register-logo-top" padding size="12" size-md="10" push-md="1">
+        <ion-button shape="round" button-round [routerLink]="['/staff/edit']" >
+          <h3 text-center>Add a Staff</h3>
+        </ion-button>
+      </ion-col>
+      <ion-col size="12" size-md="6" *ngIf="all?.length && all?.length > 1">
+          <ion-searchbar placeholder="Search by name/email/number" (ionChange)="filterList($event)"></ion-searchbar>
+      </ion-col>
+      <ion-col size="12" size-md="6" *ngIf="!staff?.length">
+        <ion-card box-shadow class="ion-text-start"  padding-bottom>
+          <!--Card content-->
+          <!--Card subtitle-->
+          <ion-card-content transparent>
+            <!--Card description-->
+            <p text-size-p padding-top>No staff found</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="6" *ngFor="let stf of staff">
+        <ion-card box-shadow class="ion-text-start"  padding-bottom>
+          <!--Card content-->
+          <ion-card-content transparent>
+            <!--Card title-->
+            <h1 title-card text-size-xs>{{stf?.stf_name}} - {{stf?.stf_no}}</h1>
+            <!--Card subtitle-->
+            <h2 text-size-sm>{{stf.stf_email}}</h2>
+            <ion-card-title padding-top>
+              <h2 text-size-sm>{{stf.loc_name}}</h2>
+            </ion-card-title>
+            <h2 text-size-sm>{{stf.loc_address}}</h2>
+
+            <!--Button code-->
+            <ion-button shape="round" button-round fill="outline">
+              {{stf?.stf_safety_code}}
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>
+

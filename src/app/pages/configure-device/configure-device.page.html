@@ -1,0 +1,111 @@
+<ion-app>
+  <!-- Header -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Configure Your Device</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- Content -->
+  <ion-content transparent padding class="auth-page" style="background-image: url(assets/imgs/background/31.jpg); background-position: left bottom; background-repeat: no-repeat; background-size: contain; ">
+    <div>
+      <form [formGroup]="configureDeviceForm" (submit)="configureDevice()" transparent>
+        <ion-grid transparent>
+          <ion-row align-items-center transparent>
+
+            <ion-col size="12" size-md="10" push-md="1">
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Staff No</ion-label>
+                <ion-input required type="text" formControlName="no" ></ion-input>
+                <!-- <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon> -->
+              </ion-item>
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Full Name</ion-label>
+                <ion-input required type="text" formControlName="name" ></ion-input>
+                <!-- <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon> -->
+              </ion-item>
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Email Address</ion-label>
+                <ion-input required type="email" formControlName="email" ></ion-input>
+                <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon>
+              </ion-item>
+              <!---Input field password-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Password</ion-label>
+                <ion-input required type="password" formControlName="password" ></ion-input>
+                <!-- <ion-icon *ngIf="password.dirty && password.invalid" icon-small name="remove-circle"></ion-icon> -->
+              </ion-item>
+              <!-- FROM: TO BE DELETED LATER -->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Location Name</ion-label>
+                <ion-input required type="text" formControlName="loc_name" ></ion-input>
+              </ion-item>
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Longitude</ion-label>
+                <ion-input required type="number" formControlName="loc_long" ></ion-input>
+              </ion-item>
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Latitude</ion-label>
+                <ion-input required type="number" formControlName="loc_lat" ></ion-input>
+              </ion-item>
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Address</ion-label>
+                <ion-input required type="text" formControlName="loc_address" ></ion-input>
+              </ion-item>
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Radius</ion-label>
+                <ion-input required type="number" formControlName="loc_radius" ></ion-input>
+              </ion-item>
+              <!-- TO: TO BE DELETED LATER -->
+
+              <ion-row no-padding>
+                <ion-col size="6" no-padding align-self-start>
+                  <!---Login ion-button-->
+                  <ion-button class="login-button" text-capitalize
+                  fill="outline" size="large" color="primary" [disabled]="configureDeviceForm.invalid" type="submit">
+                    Configure Device</ion-button>
+                </ion-col>
+                <!-- <ion-col size="6"  no-padding margin-top style="text-align:right; font-size: 0.8em; margin-top:2em;">
+                  <a [routerLink]="'/password-reset'">Forgot Password?</a>
+                </ion-col> -->
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-md="10" push-md="1">
+              <ion-row margin-top>
+                <!---Share Section-->
+                <ion-col size="6" no-padding align-self-start>
+                  <!---Test Geofence-->
+                  <ion-button expand="block" button-round facebook shape="round"
+                  fill="solid" color="primary" (click)="addGeofence()" type="button">
+                    <ion-icon slot="start" name="logo-facebook"></ion-icon>
+                    Add to Geofence
+                  </ion-button>
+                </ion-col>
+                <!-- <ion-col size="6" no-padding align-self-start>
+                  <ion-button expand="block" button-round google shape="round"
+                  fill="solid" color="danger" (click)="doGoogleLogin()" type="button">
+                    <ion-icon slot="start" name="logo-google"></ion-icon>
+                    Google
+                  </ion-button>
+                </ion-col> -->
+                <div clearfix></div>
+              </ion-row>
+            </ion-col>
+            <!---End Share Section-->
+          </ion-row>
+        </ion-grid>
+      </form>
+      <div class="ion-align-self-baseline ion-text-center ion-margin-bottom" style="font-size: 0.7em;">
+        <br>
+        <!-- v 0.0.3 -->
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-app>

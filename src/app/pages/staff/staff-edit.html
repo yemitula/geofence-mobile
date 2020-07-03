@@ -1,0 +1,78 @@
+<ion-app>
+  <!-- Header -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Add a Staff</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- Content -->
+  <ion-content transparent padding class="auth-page" style="background-image: url(assets/imgs/background/31.jpg); background-position: left bottom; background-repeat: no-repeat; background-size: contain; ">
+    <div>
+      <form [formGroup]="staffEditForm" (submit)="staffEdit()" transparent>
+        <ion-grid transparent>
+          <ion-row align-items-center transparent>
+
+            <ion-col size="12" size-md="10" push-md="1">
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Staff No</ion-label>
+                <ion-input required type="text" formControlName="no" ></ion-input>
+                <!-- <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon> -->
+              </ion-item>
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Full Name</ion-label>
+                <ion-input required type="text" formControlName="name" ></ion-input>
+                <!-- <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon> -->
+              </ion-item>
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Email Address</ion-label>
+                <ion-input required type="email" formControlName="email" ></ion-input>
+                <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon>
+              </ion-item>
+              <!---Input field password-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Password</ion-label>
+                <ion-input required type="password" formControlName="password" ></ion-input>
+                <!-- <ion-icon *ngIf="password.dirty && password.invalid" icon-small name="remove-circle"></ion-icon> -->
+              </ion-item>
+              <!-- <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Location</ion-label>
+                <ion-input required type="text" formControlName="loc_id" ></ion-input>
+              </ion-item> -->
+              <ion-item no-padding input>
+                <ion-label>Location</ion-label>
+                <!-- <ion-select  interface="popover" [(ngModel)]="cat_id" (ionChange)="selectCategory(cat_id)"> -->
+                <ion-select  interface="popover" formControlName="loc_id" required>
+                  <ion-select-option *ngFor="let location of locations" [value]="location.loc_id">{{location.loc_name}} </ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <ion-row no-padding>
+                <ion-col size="6" no-padding align-self-start>
+                  <!---Login ion-button-->
+                  <ion-button class="login-button" text-capitalize
+                  fill="outline" size="large" color="primary" [disabled]="staffEditForm.invalid" type="submit">
+                    Add Staff</ion-button>
+                </ion-col>
+                <!-- <ion-col size="6"  no-padding margin-top style="text-align:right; font-size: 0.8em; margin-top:2em;">
+                  <a [routerLink]="'/password-reset'">Forgot Password?</a>
+                </ion-col> -->
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </form>
+      <div class="ion-align-self-baseline ion-text-center ion-margin-bottom" style="font-size: 0.7em;">
+        <br>
+        <!-- v 0.0.3 -->
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-app>

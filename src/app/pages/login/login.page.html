@@ -1,0 +1,89 @@
+<ion-app>
+  <!-- Header -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Admin Login</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- Content -->
+  <ion-content transparent padding class="auth-page" style="background-image: url(assets/imgs/background/31.jpg); background-position: left bottom; background-repeat: no-repeat; background-size: contain; ">
+    <div>
+      <form [formGroup]="loginForm" (submit)="login()" transparent>
+        <ion-grid transparent>
+          <ion-row align-items-center transparent>
+            <!-- <ion-col class="login-logo-top" padding size="12" size-md="10" push-md="1">
+              <ion-img [src]="'assets/imgs/logo/login.png'"></ion-img>
+              <h3 text-center>Welcome back,<br>Sign in to continue</h3>
+            </ion-col> -->
+
+            <ion-col size="12" size-md="10" push-md="1">
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Email Address</ion-label>
+                <ion-input required type="email" formControlName="email" ></ion-input>
+                <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon>
+              </ion-item>
+              <!---Input field password-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Password</ion-label>
+                <ion-input required type="password" formControlName="password" ></ion-input>
+                <ion-icon *ngIf="password.dirty && password.invalid" icon-small name="remove-circle"></ion-icon>
+              </ion-item>
+              <ion-row no-padding>
+                <ion-col size="6" no-padding align-self-start>
+                  <!---Login ion-button-->
+                  <ion-button class="login-button" text-capitalize
+                  fill="outline" size="large" color="primary" [disabled]="loginForm.invalid" type="submit">
+                    Sign In</ion-button>
+                </ion-col>
+                <!-- <ion-col size="6"  no-padding margin-top style="text-align:right; font-size: 0.8em; margin-top:2em;">
+                  <a [routerLink]="'/password-reset'">Forgot Password?</a>
+                </ion-col> -->
+              </ion-row>
+            </ion-col>
+
+            <!-- <ion-col no-padding margin-top size="12" size-md="10" push-md="1" text-center style="font-size:1em;">
+              <a [routerLink]="'/signup'"><strong>New Here? Sign up now</strong></a>
+              <hr>
+            </ion-col> -->
+
+            <!-- <ion-col no-padding size="12" size-md="10" push-md="1" text-center style="font-size:0.8em;">
+              Or, Sign in/Sign up with
+            </ion-col> -->
+
+            <ion-col size="12" size-md="10" push-md="1">
+              <ion-row margin-top>
+                <!---Share Section-->
+                <ion-col size="6" no-padding align-self-start>
+                  <!---Facebook ion-button-->
+                  <!-- <ion-button expand="block" button-round facebook shape="round"
+                  fill="solid" color="primary" (click)="doFacebookLogin()" type="button">
+                    <ion-icon slot="start" name="logo-facebook"></ion-icon>
+                    Facebook
+                  </ion-button> -->
+                </ion-col>
+                <!-- <ion-col size="6" no-padding align-self-start>
+                  <ion-button expand="block" button-round google shape="round"
+                  fill="solid" color="danger" (click)="doGoogleLogin()" type="button">
+                    <ion-icon slot="start" name="logo-google"></ion-icon>
+                    Google
+                  </ion-button>
+                </ion-col> -->
+                <div clearfix></div>
+              </ion-row>
+            </ion-col>
+            <!---End Share Section-->
+          </ion-row>
+        </ion-grid>
+      </form>
+      <div class="ion-align-self-baseline ion-text-center ion-margin-bottom" style="font-size: 0.7em;">
+        <br>
+        <!-- v 0.0.3 -->
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-app>

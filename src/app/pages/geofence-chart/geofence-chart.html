@@ -1,0 +1,45 @@
+<!-- Header -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Geofence List ({{geofences?.length}})
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- Content -->
+<ion-content>
+<!-- GOOGLE CARD --COMPONENT 2 -->
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col size="12" size-md="6" *ngIf="!geofences?.length">
+        <ion-card box-shadow class="ion-text-start"  padding-bottom>
+          <!--Card content-->
+          <!--Card subtitle-->
+          <ion-card-content transparent>
+            <!--Card description-->
+            <p text-size-p padding-top>No Geofence found</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="6" *ngFor="let geofence of geofences">
+        <ion-card box-shadow class="ion-text-start"  padding-bottom>
+          <!--Card content-->
+          <ion-card-content transparent>
+            <!--Card title-->
+            <h1 title-card text-size-xs>{{geofence?.loc_name}}</h1>
+            <!--Card subtitle-->
+            <h2 text-size-sm>{{geofence.loc_address}}</h2>
+            <ion-card-title padding-top>
+              <h2 text-size-sm>{{geofence.scount}} Staff(s)</h2>
+            </ion-card-title>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>
+

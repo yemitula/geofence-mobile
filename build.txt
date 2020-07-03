@@ -1,0 +1,33 @@
+Build Environment on Mac
+
+3 Jul 2020 - 11:54
+
+ionic info:
+
+Ionic:
+
+   Ionic CLI                     : 6.10.1 (/Users/yemitula/.nvm/versions/node/v12.14.1/lib/node_modules/@ionic/cli)
+   Ionic Framework               : @ionic/angular 5.2.3
+   @angular-devkit/build-angular : 0.901.10
+   @angular-devkit/schematics    : 9.1.10
+   @angular/cli                  : 9.1.10
+   @ionic/angular-toolkit        : 2.2.0
+
+Cordova:
+
+   Cordova CLI       : 9.0.0 (cordova-lib@9.0.1)
+   Cordova Platforms : android 8.1.0
+   Cordova Plugins   : cordova-plugin-ionic-keyboard 2.2.0, cordova-plugin-ionic-webview 4.2.1, (and 4 other plugins)
+
+Utility:
+
+   cordova-res (update available: 0.15.1) : 0.15.0
+   native-run                             : 1.0.0
+
+System:
+
+   Android SDK Tools : 26.1.1 (/Users/yemitula/Library/Android/sdk)
+   NodeJS            : v12.14.1 (/Users/yemitula/.nvm/versions/node/v12.14.1/bin/node)
+   npm               : 6.13.4
+   OS                : macOS Catalina
+   Xcode             : Xcode 11.5 Build version 11E608c
