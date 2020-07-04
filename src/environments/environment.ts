@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost/mobile/geofence-app/api/index.php',
+  API_URL: 'http://localhost/geofence-api/index.php',
   DOCS_URL: 'http://localhost/mobile/geofence-app/docs/'
 };
 
