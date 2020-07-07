@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost/geofence-api/index.php',
+  API_URL: 'https://tulabyte-geofence-api.herokuapp.com/index.php',
+  // API_URL: 'http://localhost/geofence-api/index.php',
   DOCS_URL: 'http://localhost/mobile/geofence-app/docs/'
 };
 

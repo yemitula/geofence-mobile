@@ -1,3 +1,15 @@
+ionic cordova build android --prod --release
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore geofence.keystore geofence-release.apk Geofence
+
+GFMgp$$2020
+
+
+/Users/yemitula/Library/Android/sdk/build-tools/29.0.3/zipalign -v 4 apks/geofence-release.apk apks/whytecleon-0.0.1.apk
+
+-----------------
+
+
 Build Environment on Mac
 
 3 Jul 2020 - 11:54

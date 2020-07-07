@@ -102,7 +102,7 @@ export class ConfigureDevicePage {
       );
   }
 
-  private addGeofence() {
+  addGeofence() {
     //options describing geofence
     let fence = {
       id: '69ca1b88-6fbe-4e80-a4d4-ff4d3748acdb', //any unique ID

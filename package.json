@@ -26,9 +26,10 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
     "cordova-android": "^8.1.0",
-    "cordova-plugin-add-swift-support": "^1.6.0",
-    "cordova-plugin-compat": "^1.2.0",
-    "cordova-plugin-geofence": "^0.7.0",
+    "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-androidx": "^2.0.0",
+    "cordova-plugin-androidx-adapter": "^1.1.1",
+    "cordova-plugin-geofence": "git+https://github.com/compelling/cordova-plugin-geofence.git",
     "es6-promise-plugin": "^4.2.2",
     "ion2-calendar": "^3.0.0-rc.0",
     "moment": "^2.27.0",
@@ -76,10 +77,11 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-geofence": {}
+      "cordova-plugin-androidx": {},
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-plugin-geofence": {},
+      "cordova-plugin-add-swift-support": {}
     },
-    "platforms": [
-      "android"
-    ]
+    "platforms": []
   }
 }

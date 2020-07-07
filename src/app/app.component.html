@@ -1,7 +1,8 @@
 <ion-app>
   <ion-menu *ngIf="showSidebar">
+    <!-- [ngStyle]="{'background-image': 'url(' + headerMenuItem.background + ')'}" -->
     <ion-header background-size
-      [ngStyle]="{'background-image': 'url(' + headerMenuItem.background + ')'}">
+      >
           <ion-item transparent text-center lines="none">
             <ion-label text-center>
                 <img margin-bottom [src]="'assets/imgs/logo/login.png'">
