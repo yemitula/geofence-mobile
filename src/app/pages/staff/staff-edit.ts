@@ -105,12 +105,7 @@ export class StaffEdit {
           if(response) {
             if(response.status == "success") {
               this.ux.alert("Staff Added successfully", "Success", "success");
-              // signup verified?
-              // let {user} = response;
-                // this.auth.userLogin(user);
-                // this.app.showSidebar = true;
-                // this.app.setUser(user);
-                // this.nav.navigateRoot(['/success']);
+              this.nav.pop();
             } else {
               this.ux.alert(response.message, "Error!", "error");
             }

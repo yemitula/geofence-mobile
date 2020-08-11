@@ -73,13 +73,13 @@ export class LoginPage {
           console.log('post:auth/user/login response:', response);
           if(response) {
             if(response.status == "success") {
-              this.ux.alert("Login successful", "Success", "success");
               // signup verified?
               let {user} = response;
-                this.auth.userLogin(user);
-                // this.app.showSidebar = true;
-                this.app.setUser(user);
-                this.nav.navigateRoot(['/locations']);
+              this.auth.userLogin(user);
+              // this.app.showSidebar = true;
+              this.app.setUser(user);
+              this.nav.navigateRoot(['/locations']);
+              this.ux.toast("Login successful");
             } else {
               this.ux.alert(response.message, "Error!", "error");
             }

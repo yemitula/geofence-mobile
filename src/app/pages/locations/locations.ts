@@ -35,6 +35,7 @@ export class Locations implements OnInit {
   }
   
   ngOnInit() {
+    console.log('locations');
     this.loadLocations();
     // this.loadPopular();
   }

@@ -20,59 +20,35 @@
             </ion-col> -->
 
             <ion-col size="12" size-md="10" push-md="1">
-              <!---Input field username-->
-              <ion-item no-padding input>
-                <ion-label text-size-xs position="floating">Email Address</ion-label>
-                <ion-input required type="email" formControlName="email" ></ion-input>
-                <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon>
-              </ion-item>
-              <!---Input field password-->
-              <ion-item no-padding input>
-                <ion-label text-size-xs position="floating">Password</ion-label>
-                <ion-input required type="password" formControlName="password" ></ion-input>
-                <ion-icon *ngIf="password.dirty && password.invalid" icon-small name="remove-circle"></ion-icon>
-              </ion-item>
-              <ion-row no-padding>
-                <ion-col size="6" no-padding align-self-start>
-                  <!---Login ion-button-->
-                  <ion-button class="login-button" text-capitalize
-                  fill="outline" size="large" color="primary" [disabled]="loginForm.invalid" type="submit">
-                    Sign In</ion-button>
-                </ion-col>
-                <!-- <ion-col size="6"  no-padding margin-top style="text-align:right; font-size: 0.8em; margin-top:2em;">
-                  <a [routerLink]="'/password-reset'">Forgot Password?</a>
-                </ion-col> -->
-              </ion-row>
+              <ion-list>
+                
+                <!---Input field username-->
+                <ion-item  input>
+                  <ion-label text-size-xs position="floating">Email Address</ion-label>
+                  <ion-input required type="email" formControlName="email" ></ion-input>
+                  <ion-icon *ngIf="email.dirty && email.invalid" icon-small name="remove-circle"></ion-icon>
+                </ion-item>
+                <!---Input field password-->
+                <ion-item  input>
+                  <ion-label text-size-xs position="floating">Password</ion-label>
+                  <ion-input required type="password" formControlName="password" ></ion-input>
+                  <ion-icon *ngIf="password.dirty && password.invalid" icon-small name="remove-circle"></ion-icon>
+                </ion-item>
+                <ion-row no-padding>
+                  <ion-col size="6" no-padding align-self-start>
+                    <!---Login ion-button-->
+                    <ion-button class="login-button" text-capitalize
+                    fill="outline" size="large" color="primary" [disabled]="loginForm.invalid" type="submit">
+                      Sign In</ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-list>
             </ion-col>
-
-            <!-- <ion-col no-padding margin-top size="12" size-md="10" push-md="1" text-center style="font-size:1em;">
-              <a [routerLink]="'/signup'"><strong>New Here? Sign up now</strong></a>
-              <hr>
-            </ion-col> -->
-
-            <!-- <ion-col no-padding size="12" size-md="10" push-md="1" text-center style="font-size:0.8em;">
-              Or, Sign in/Sign up with
-            </ion-col> -->
 
             <ion-col size="12" size-md="10" push-md="1">
               <ion-row margin-top>
                 <!---Share Section-->
-                <ion-col size="6" no-padding align-self-start>
-                  <!---Facebook ion-button-->
-                  <!-- <ion-button expand="block" button-round facebook shape="round"
-                  fill="solid" color="primary" (click)="doFacebookLogin()" type="button">
-                    <ion-icon slot="start" name="logo-facebook"></ion-icon>
-                    Facebook
-                  </ion-button> -->
-                </ion-col>
-                <!-- <ion-col size="6" no-padding align-self-start>
-                  <ion-button expand="block" button-round google shape="round"
-                  fill="solid" color="danger" (click)="doGoogleLogin()" type="button">
-                    <ion-icon slot="start" name="logo-google"></ion-icon>
-                    Google
-                  </ion-button>
-                </ion-col> -->
-                <div clearfix></div>
+                <ion-col size="6" no-padding align-self-start></ion-col>
               </ion-row>
             </ion-col>
             <!---End Share Section-->

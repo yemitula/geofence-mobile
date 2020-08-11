@@ -10,17 +10,15 @@ export class AuthService {
   usertype: string;
   constructor(
     
-    ) { 
-       
-     }
+    ) { }
 
   userLogin(user: any) {
-    localStorage.setItem('alphalex_mobile_customer', JSON.stringify(user));
+    localStorage.setItem('geofence_mobile_user', JSON.stringify(user));
     this.user = user;
   }
 
   public get getUser() : any {
-    if (this.user = localStorage.getItem('alphalex_mobile_customer')) {
+    if (this.user = localStorage.getItem('geofence_mobile_user')) {
         return JSON.parse(this.user);
     } else {
       return false;
@@ -28,8 +26,8 @@ export class AuthService {
   }
 
   public get loggedIn() : boolean {
-    if (this.user = localStorage.getItem('alphalex_mobile_customer')) {  
-      const user = JSON.parse(localStorage.getItem('alphalex_mobile_customer'));
+    if (this.user = localStorage.getItem('geofence_mobile_user')) {  
+      const user = JSON.parse(localStorage.getItem('geofence_mobile_user'));
       return user.token !== null;
     } else {
       return false;
@@ -38,7 +36,7 @@ export class AuthService {
 
   logout() {
       // remove user from local storage to log user out
-      localStorage.removeItem('alphalex_mobile_customer');
+      localStorage.removeItem('geofence_mobile_user');
       this.isAuthenticated = false;
       this.user = null;
   }

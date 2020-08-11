@@ -15,6 +15,9 @@ import { HttpClient, HttpClientModule, HttpHandler, HTTP_INTERCEPTORS } from '@a
 import { AuthService } from './services/auth-service';
 import { Api } from './services/api-service';
 import { Ux } from './services/ux-service';
+import { DeviceLinker } from './services/device-linker-service';
+import { Geofence } from '@ionic-native/geofence/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +27,9 @@ import { Ux } from './services/ux-service';
     StatusBar, HttpClient, HttpClientModule,
     SplashScreen,
     AuthService, Api, Ux,
+    DeviceLinker,
+    Geofence,
+    Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],

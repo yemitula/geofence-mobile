@@ -2,10 +2,7 @@
   <!-- Header -->
   <ion-header>
     <ion-toolbar>
-      <!-- <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons> -->
-      <ion-title>Home</ion-title>
+      <ion-title>Calendar</ion-title>
     </ion-toolbar>
   </ion-header>
   <!-- Content -->
@@ -27,9 +24,14 @@
             </div>
         </ion-col>
       </ion-row>
-      <!-- <ion-row> -->
-        <ion-button [routerLink]="['/login']" _ngcontent-ieq-c1="" button-round="" color="primary" expand="block" fill="solid" shape="round" type="button" ng-reflect-color="primary" ng-reflect-expand="block" ng-reflect-fill="solid" ng-reflect-shape="round" ng-reflect-type="button" class="ion-color ion-color-primary md button button-block button-round button-solid ion-activatable ion-focusable hydrated"><ion-icon _ngcontent-ieq-c1="" slot="start" role="img" class="md hydrated"></ion-icon> ADMIN </ion-button>
-      <!-- </ion-row> -->
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button fill="clear" [routerLink]="['/login']" color="primary">
+            <ion-icon slot="start" name="settings"></ion-icon>
+            SETTINGS
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
 
   </ion-content>

@@ -5,7 +5,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Location List ({{locations?.length}})
+      Locations ({{locations?.length}})
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -17,6 +17,7 @@
       <ion-col size="12" size-md="6" *ngIf="all?.length && all?.length > 1">
           <ion-searchbar placeholder="Search by name/address" (ionChange)="filterList($event)"></ion-searchbar>
       </ion-col>
+      <!-- no locations -->
       <ion-col size="12" size-md="6" *ngIf="!locations?.length">
         <ion-card box-shadow class="ion-text-start"  padding-bottom>
           <!--Card content-->
@@ -27,15 +28,15 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+      <!-- location list -->
       <ion-col size="12" size-md="6" *ngFor="let location of locations">
-        <ion-card box-shadow class="ion-text-start"  padding-bottom>
-          <!--Card content-->
-          <ion-card-content transparent>
-            <!--Card title-->
-            <ion-card-title padding-top>
-              <h1 title-card text-size-xs>{{location?.loc_name}}</h1>
-              <h2 text-size-sm>{{location.loc_address}}</h2>
-            </ion-card-title>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{location?.loc_name}}</ion-card-title>
+            <ion-card-subtitle>{{location.loc_address}}</ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
             <ion-button [routerLink]="['/staff']" [queryParams]="{loc_id:location.loc_id}" >
               Staff List
             </ion-button>
