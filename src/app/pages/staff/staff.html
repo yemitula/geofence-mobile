@@ -18,6 +18,9 @@
         <ion-button shape="round" button-round [routerLink]="['/staff/edit']" >
           Add a Staff
         </ion-button>
+        <ion-button shape="round" button-round (click)="showTestNotification()" >
+          Test Notification
+        </ion-button>
       </ion-col>
       <ion-col size="12" size-md="6" *ngIf="all?.length && all?.length > 1">
         <ion-item-divider>

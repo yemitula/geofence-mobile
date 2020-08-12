@@ -7,9 +7,20 @@ import { Ux } from 'src/app/services/ux-service';
 import { AppSettings } from 'src/app/services/app-settings';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceLinker } from 'src/app/services/device-linker-service';
-import { Geofence } from '@ionic-native/geofence/ngx';
+import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationEvents, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocalNotifications, ILocalNotificationActionType } from '@ionic-native/local-notifications/ngx';
 
+
+const config: BackgroundGeolocationConfig = {
+  desiredAccuracy: 0,
+  stationaryRadius: 20,
+  distanceFilter: 10,
+  debug: true,
+  interval: 2000,
+  startOnBoot: true,
+  stopOnTerminate: false
+};
 
 @Component({
   selector: 'app-staff',
@@ -24,6 +35,7 @@ export class Staff implements OnInit {
   location: any = {};
   linkedStaff: any = {};
   query: string;
+  clickSub: any;
 
   constructor(
     @Inject(AppComponent) private app: AppComponent,
@@ -35,22 +47,65 @@ export class Staff implements OnInit {
     private route: ActivatedRoute,
     private deviceLinker: DeviceLinker,
     private alertCtrl: AlertController,
-    private geofence: Geofence,
-    private geolocation: Geolocation
+    private backgroundGeolocation: BackgroundGeolocation,
+    private geolocation: Geolocation,
+    private localNotifications: LocalNotifications
   ) {
-    // initialize the plugin
-    geofence.initialize().then(
-      // resolved promise does not return a value
-      () => console.log('Geofence Plugin Ready'),
-      (err) => console.log(err)
-    );
+
+    this.backgroundGeolocation.configure(config)
+      .then(() => {
+
+        this.backgroundGeolocation.on(BackgroundGeolocationEvents.location).subscribe((location: BackgroundGeolocationResponse) => {
+          console.log('current postition from background geolocation', location);
+          if (location.latitude && location.longitude) {
+            let center = {
+              lat: 6.6473,
+              lng: 3.3594
+            };
+            let point = {
+              lat: location.latitude,
+              lng: location.longitude
+            };
+            if (this.pointWithinFence(point, center, 1)) {
+              console.log("location within circle");
+            } else {
+              console.log("location OUTSIDE circle!!!")
+            }
+          }
+        });
+
+      });
+
+    // start recording location
+    this.backgroundGeolocation.start();
 
     // get current position
     this.geolocation.getCurrentPosition().then((resp) => {
       console.log('current position', resp);
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+
+    //  watch location
+    let watch = this.geolocation.watchPosition({
+      enableHighAccuracy: true
+    });
+    watch.subscribe((data) => {
+      // console.log('watch location changed:', data);
+      if (data.coords) {
+        let center = {
+          lat: 6.6473,
+          lng: 3.3594
+        };
+        let point = {
+          lat: data.coords.latitude,
+          lng: data.coords.longitude
+        };
+        // console.log("within circle:", this.pointWithinFence(point, center, 1));
+      } else {
+        console.log('no coords!');
+      }
+    });
 
     this.customer = this.app.user;
     this.route.queryParams
@@ -70,6 +125,39 @@ export class Staff implements OnInit {
     // get the linked staff 
     this.linkedStaff = this.deviceLinker.getLinkedStaff;
     console.log("linkedStaff in staff", this.linkedStaff);
+  }
+
+  unsub() {
+    this.clickSub.unsubscribe();
+  }
+
+  showTestNotification() {
+    this.clickSub = this.localNotifications.on('click').subscribe(data => {
+      console.log("data from notification", data);
+      this.ux.alert("Notification clicked!");
+      this.unsub();
+    });
+    // Schedule a single notification
+    this.localNotifications.schedule({
+      id: 1,
+      title: 'Testing Notification',
+      text: 'Please tap to enter anything you like',
+      foreground: true,
+      launch: true,
+      vibrate: true,
+      // sticky: true,
+      data: { secret: 'X121212121' }
+    });
+  }
+
+  // check if a point is within a circular fence, radius is in km
+  // https://stackoverflow.com/questions/24680247/check-if-a-latitude-and-longitude-is-within-a-circle-google-maps
+  pointWithinFence(checkPoint, centerPoint, radius) {
+    var ky = 40000 / 360;
+    var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;
+    var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
+    var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+    return Math.sqrt(dx * dx + dy * dy) <= radius;
   }
 
   async loadStaff() {
@@ -152,7 +240,7 @@ export class Staff implements OnInit {
             // link staff to this device
             this.deviceLinker.link(staff);
             this.linkedStaff = this.deviceLinker.getLinkedStaff;
-            this.addGeofence(this.linkedStaff);
+            // TODO - start watching geofence for staff
             // success
             this.ux.toast(`${staff.stf_name} successfully LINKED to this Device!`);
           }
@@ -193,28 +281,6 @@ export class Staff implements OnInit {
     });
 
     await alert.present();
-  }
-
-  private addGeofence(staff) {
-    //options describing geofence
-    let fence = {
-      id: `${staff.stf_id}${staff.loc_id}${new Date().getTime()}`, //Unique ID - stf_id + loc_id + time 
-      latitude:       parseFloat(staff.loc_lat), //center of geofence radius
-      longitude:      parseFloat(staff.loc_long),
-      radius:         parseInt(staff.loc_radius), //radius to edge of geofence in meters
-      transitionType: 3, //see 'Transition Types' below
-      notification: { //notification settings
-          id:             1, //any unique ID
-          title:          `Leaving Location`, //notification title
-          text:           `You are leaving ${staff.loc_name}! Please confirm your exit.`, //notification body
-          openAppOnClick: true //open app when notification is tapped
-      }
-    }
-  
-    this.geofence.addOrUpdate(fence).then(
-       () => console.log('Geofence added'),
-       (err) => console.log('Geofence failed to add', err)
-     );
   }
 
   filterList(event) {

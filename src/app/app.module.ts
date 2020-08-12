@@ -17,7 +17,10 @@ import { Api } from './services/api-service';
 import { Ux } from './services/ux-service';
 import { DeviceLinker } from './services/device-linker-service';
 import { Geofence } from '@ionic-native/geofence/ngx';
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +32,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     AuthService, Api, Ux,
     DeviceLinker,
     Geofence,
+    BackgroundGeolocation,
+    LocalNotifications,
     Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
