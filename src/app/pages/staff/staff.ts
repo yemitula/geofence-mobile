@@ -11,6 +11,10 @@ import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocati
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications, ILocalNotificationActionType } from '@ionic-native/local-notifications/ngx';
 
+export interface Coords {
+  lat: number,
+  lng: number
+}
 
 const config: BackgroundGeolocationConfig = {
   desiredAccuracy: 0,
@@ -36,6 +40,11 @@ export class Staff implements OnInit {
   linkedStaff: any = {};
   query: string;
   clickSub: any;
+  position: Coords;
+  center: Coords = {
+    lat: 6.6473,
+    lng: 3.3594
+  };
 
   constructor(
     @Inject(AppComponent) private app: AppComponent,
@@ -52,60 +61,46 @@ export class Staff implements OnInit {
     private localNotifications: LocalNotifications
   ) {
 
+    // background geolocation
     this.backgroundGeolocation.configure(config)
       .then(() => {
-
         this.backgroundGeolocation.on(BackgroundGeolocationEvents.location).subscribe((location: BackgroundGeolocationResponse) => {
-          console.log('current postition from background geolocation', location);
+          console.log('current position from background geolocation', location);
           if (location.latitude && location.longitude) {
-            let center = {
-              lat: 6.6473,
-              lng: 3.3594
-            };
-            let point = {
+            let newPosition = {
               lat: location.latitude,
               lng: location.longitude
             };
-            if (this.pointWithinFence(point, center, 1)) {
-              console.log("location within circle");
-            } else {
-              console.log("location OUTSIDE circle!!!")
+            // have we recorded a position at all?
+            if(this.position && this.position.lat && this.position.lng) {
+              let newPositionWithinFence = this.pointWithinFence(newPosition, this.center, 1);
+              let oldPositionWithinFence = this.pointWithinFence(this.position, this.center, 1);
+              if (newPositionWithinFence) {
+                console.log("location within circle");
+                // was previous position outside the circle?
+                if(!oldPositionWithinFence) {
+                  // Entering circle
+                  // Alert that staff is back in the circle and carry out necessary actions
+                  this.ux.alert("You have ENTERED the circle!");
+                }
+              } else {
+                console.log("location OUTSIDE circle!!!");
+                // was previous position within circle?
+                if(oldPositionWithinFence) {
+                  // Exiting circle
+                  // Alert that staff is leaving the circle and carry out necessary actions
+                  this.ux.alert("You have EXITED the circle!");
+                }
+              }
             }
+            // store the new position
+            this.position = newPosition;
           }
         });
-
       });
 
     // start recording location
     this.backgroundGeolocation.start();
-
-    // get current position
-    this.geolocation.getCurrentPosition().then((resp) => {
-      console.log('current position', resp);
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
-
-    //  watch location
-    let watch = this.geolocation.watchPosition({
-      enableHighAccuracy: true
-    });
-    watch.subscribe((data) => {
-      // console.log('watch location changed:', data);
-      if (data.coords) {
-        let center = {
-          lat: 6.6473,
-          lng: 3.3594
-        };
-        let point = {
-          lat: data.coords.latitude,
-          lng: data.coords.longitude
-        };
-        // console.log("within circle:", this.pointWithinFence(point, center, 1));
-      } else {
-        console.log('no coords!');
-      }
-    });
 
     this.customer = this.app.user;
     this.route.queryParams
@@ -159,6 +154,7 @@ export class Staff implements OnInit {
     var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
     return Math.sqrt(dx * dx + dy * dy) <= radius;
   }
+  
 
   async loadStaff() {
     console.log('loadStaff');
@@ -202,6 +198,11 @@ export class Staff implements OnInit {
           if (response) {
             if (response.status == "success") {
               this.location = response.location;
+              // set center of circle
+              this.center = {
+                lat: +this.location.loc_lat,
+                lng: +this.location.loc_long
+              }
             } else {
               this.ux.alert(response.message, "Error!", "error");
             }
