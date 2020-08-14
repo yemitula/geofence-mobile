@@ -5,7 +5,7 @@
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/"></ion-back-button>
       </ion-buttons>
-      <ion-title>Add a Staff</ion-title>
+      <ion-title>{{id?Edit:Add}} a Staff</ion-title>
     </ion-toolbar>
   </ion-header>
   <!-- Content -->
@@ -57,7 +57,7 @@
                   <!---Login ion-button-->
                   <ion-button class="login-button" text-capitalize
                   fill="outline" size="large" color="primary" [disabled]="staffEditForm.invalid" type="submit">
-                    Add Staff</ion-button>
+                    Save</ion-button>
                 </ion-col>
                 <!-- <ion-col size="6"  no-padding margin-top style="text-align:right; font-size: 0.8em; margin-top:2em;">
                   <a [routerLink]="'/password-reset'">Forgot Password?</a>

@@ -21,6 +21,10 @@ import { StaffEdit } from './staff-edit';
       {
         path: 'edit',
         component: StaffEdit
+      },
+      {
+        path: 'edit/:id',
+        component: StaffEdit
       }
     ])
   ],

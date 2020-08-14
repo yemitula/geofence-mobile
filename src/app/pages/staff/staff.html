@@ -61,6 +61,12 @@
               <ion-icon slot="start" name="eye"></ion-icon>
               Link this Device
             </ion-button>
+            <ion-button fill="outline" [routerLink]="['/staff/edit',stf.stf_id]"  >
+              Edit Staff
+            </ion-button>
+            <ion-button fill="solid" color="danger" (click)="onDelete(stf.stf_id)"  >
+              Delete Staff
+            </ion-button>
           </ion-card-content>
           <div *ngIf="stf.stf_id === linkedStaff.stf_id">
             <ion-item color="success">
