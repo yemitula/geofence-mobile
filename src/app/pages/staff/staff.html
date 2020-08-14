@@ -23,7 +23,7 @@
         </ion-button>
       </ion-col>
       <ion-col size="12" size-md="6" *ngIf="all?.length && all?.length > 1">
-        <ion-item-divider>
+        <ion-item-divider *ngIf="location.loc_name">
           <ion-label class="ion-text-wrap">
             <h1>{{location?.loc_name}}</h1>
           </ion-label>
@@ -61,22 +61,16 @@
               <ion-icon slot="start" name="eye"></ion-icon>
               Link this Device
             </ion-button>
-            <ion-button fill="outline" [routerLink]="['/staff/edit',stf.stf_id]"  >
+            <ion-button fill="solid" color="medium" [routerLink]="['/fence-exits']" [queryParams]="{stf_id:stf.stf_id,loc_id:stf.stf_location_id}" >
+              Exit(s)
+            </ion-button>
+            <ion-button fill="solid" color="warning" [routerLink]="['/staff/edit',stf.stf_id]"  >
               Edit Staff
             </ion-button>
             <ion-button fill="solid" color="danger" (click)="onDelete(stf.stf_id)"  >
               Delete Staff
             </ion-button>
           </ion-card-content>
-          <div *ngIf="stf.stf_id === linkedStaff.stf_id">
-            <ion-item color="success">
-              <ion-icon name="eye" size="large" slot="start"></ion-icon>
-              <ion-label>Currently linked to this device</ion-label>
-            </ion-item>
-            <ion-item button color="danger" (click)="unlink(stf)">
-              <ion-label class="ion-text-center">Unlink this Device</ion-label>
-            </ion-item>
-          </div>
         </ion-card>
       </ion-col>
     </ion-row>

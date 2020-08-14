@@ -19,7 +19,7 @@ import { Geofence } from '@ionic-native/geofence/ngx';
 export class StaffEdit {
   staffEditForm: FormGroup;
   item = {};
-  staff:any;
+  staff:any={};
   id:any;
   locations: any[] = [];
 
@@ -38,6 +38,7 @@ export class StaffEdit {
       this.item = this.homeService.getData();
     
     this.staffEditForm = new FormGroup({
+      // id: new FormControl(),
       name: new FormControl(),
       no: new FormControl(),
       email: new FormControl(),
@@ -55,10 +56,13 @@ export class StaffEdit {
 
   ngOnInit() {
     this.loadLocations();
-    const routeSubscription =  this.activatedRoute.params.subscribe(params => {
+        this.staff.title = 'Add';
+        const routeSubscription =  this.activatedRoute.params.subscribe(params => {
 			this.id = params.id;
 			if (this.id) {
-    this.loadStaff(this.id);
+        this.loadStaff(this.id);
+        this.staff.title = 'Edit';
+        console.log('title=',this.staff);
 			}
 		});
 		// this.subscriptions.push(routeSubscription);
@@ -108,13 +112,12 @@ export class StaffEdit {
           if(response) {
             if(response.status == "success") {
               this.staff = response.staff;
-			      	this.staffEditForm.value.name = this.staff.stf_name;
-			      	this.staffEditForm.value.no = this.staff.stf_no;
-			      	this.staffEditForm.value.email = this.staff.stf_email;
-			      	this.staffEditForm.value.password = this.staff.stf_password;
-			      	this.staffEditForm.value.loc_id = this.staff.stf_location_id;
-          console.log('staffEditForm:', this.staffEditForm.value);
-          // this.staffEditForm.value = this.staff;
+			      	// this.staffEditForm.controls.id.setValue(this.staff.stf_id);
+			      	this.staffEditForm.controls.name.setValue(this.staff.stf_name);
+			      	this.staffEditForm.controls.no.setValue(this.staff.stf_no);
+			      	this.staffEditForm.controls.email.setValue(this.staff.stf_email);
+			      	this.staffEditForm.controls.password.setValue(this.staff.stf_password);
+			      	this.staffEditForm.controls.loc_id.setValue(this.staff.stf_location_id);
             } else {
               this.ux.alert(response.message, "Error!", "error");
             }
@@ -135,10 +138,40 @@ export class StaffEdit {
   async staffEdit() {
     console.log('staffEdit called! staffEditForm:', this.staffEditForm.value);
     let staff = this.staffEditForm.value;
-    let loader = await this.loading.create({
-      message: 'Adding Staff...',
-    });
-    loader.present();
+    if(this.id){
+      let loader = await this.loading.create({
+        message: 'Updating Staff...',
+      });
+      loader.present();
+      staff.id=this.id;
+      this.api.put('staff', { staff: staff })
+      .subscribe(
+        async (response: any) => {
+          console.log('put:staffEdit response:', response);
+          if(response) {
+            if(response.status == "success") {
+              this.ux.alert("Staff Updated successfully", "Success", "success");
+              this.nav.pop();
+            } else {
+              this.ux.alert(response.message, "Error!", "error");
+            }
+          } else {
+            // this.ux.alert(AppSettings.API_EMPTY_RESPONSE_MESSAGE, "Error!", "error");
+          }
+        }, async error => {
+          loader.dismiss();
+          console.log('put:staffEdit error:', error);
+          // this.ux.alert(AppSettings.API_HTTP_FAIL_MESSAGE, "Error!", "error");
+        }, () => {
+            console.log('put:staffEdit finished');
+            loader.dismiss();
+        }
+      );
+    }else{
+      let loader = await this.loading.create({
+        message: 'Adding Staff...',
+      });
+      loader.present();
     this.api.post('staff', { staff: staff })
       .subscribe(
         async (response: any) => {
@@ -162,7 +195,12 @@ export class StaffEdit {
             loader.dismiss();
         }
       );
+    }
   }
+
+  // async onSubmit(){
+  //   if(this.staffEditForm.value.id){}
+  // }
 
   private addGeofence() {
     //options describing geofence

@@ -224,7 +224,7 @@ export class Staff implements OnInit {
     if(confirm("Are you sure you want to delete this Staff?")) {
       this.api.delete( '/staff/' + id)
         .subscribe(
-          async (response) => {
+          async (response:any) => {
             console.log("delete department:", response);
             if(response.status == 'success') {
               // remove from list

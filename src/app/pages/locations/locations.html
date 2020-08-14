@@ -14,6 +14,11 @@
 <!-- GOOGLE CARD --COMPONENT 2 -->
   <ion-grid no-padding>
     <ion-row>
+      <ion-col class="register-logo-top" padding size="12" size-md="10" push-md="1">
+        <ion-button shape="round" button-round [routerLink]="['/location/edit']" >
+          Add a Location
+        </ion-button>
+      </ion-col>
       <ion-col size="12" size-md="6" *ngIf="all?.length && all?.length > 1">
           <ion-searchbar placeholder="Search by name/address" (ionChange)="filterList($event)"></ion-searchbar>
       </ion-col>
@@ -38,6 +43,7 @@
         
           <ion-card-content>
             <ion-button [routerLink]="['/staff']" [queryParams]="{loc_id:location.loc_id}" >
+              <ion-icon slot="start" name="person"></ion-icon>
               Staff List
             </ion-button>
           </ion-card-content>

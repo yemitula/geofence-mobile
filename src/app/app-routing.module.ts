@@ -25,7 +25,15 @@ const routes: Routes = [
   {
     path: 'geofence-chart',
     loadChildren: () => import('./pages/geofence-chart/geofence-chart.module').then( m => m.GeofenceChartPageModule)
-  }
+  },
+  {
+    path: 'fence-exits',
+    loadChildren: () => import('./pages/fence-exits/fence-exits.module').then( m => m.FenceExitsPageModule)
+  },
+  {
+    path: 'movements',
+    loadChildren: () => import('./pages/movements/movements.module').then( m => m.MovementsPageModule)
+  },
 ];
 @NgModule({
   imports: [

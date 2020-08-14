@@ -1,0 +1,62 @@
+<!-- Header -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Fence Exits ({{exits?.length}})
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- Content -->
+<ion-content>
+<!-- GOOGLE CARD --COMPONENT 2 -->
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col class="register-logo-top" padding size="12" size-md="10" push-md="1">
+        <ion-button [routerLink]="['/staff']" color="success" [queryParams]="{loc_id:sub.loc_id}" >
+         Back to Staff List
+        </ion-button>
+        <!-- <ion-button shape="round" button-round (click)="showTestNotification()" >
+          Test Notification
+        </ion-button> -->
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item-divider *ngIf="staff.stf_name">
+          <ion-label class="ion-text-wrap">
+            <h1>{{staff?.stf_name}}</h1>
+          </ion-label>
+        </ion-item-divider>
+          <ion-searchbar *ngIf="all?.length && all?.length > 1" placeholder="Search by name/email/number" (ionChange)="filterList($event)"></ion-searchbar>
+      </ion-col>
+      <ion-col size="12" size-md="6" *ngIf="!exits?.length">
+        <ion-card box-shadow class="ion-text-start"  padding-bottom>
+          <!--Card content-->
+          <!--Card subtitle-->
+          <ion-card-content transparent>
+            <!--Card description-->
+            <p text-size-p padding-top>No exit found</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="6" *ngFor="let exit of exits">
+        <ion-card box-shadow class="ion-text-start"  padding-bottom>
+          <!--Card content-->
+          <ion-card-content transparent>
+            <ion-card-title padding-top>
+              <p title-card text-size-xs>{{exit?.stf_name}}</p>
+              <p text-size-sm>{{exit.loc_address}}</p>
+            </ion-card-title>
+            <ion-button fill="solid" color="primary" [routerLink]="['/movements']" [queryParams]="{fex_id:exit.fex_id,loc_id:sub.loc_id,stf_id:sub.stf_id}" >
+              <ion-icon slot="start" name="document"></ion-icon>
+              Movement Logs
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>
+
