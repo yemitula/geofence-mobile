@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { ModalController, LoadingController, NavController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 // import { AppSettings } from './../../services/app-settings';
 import { HomeService } from './../../services/home-service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -18,13 +19,13 @@ import { Geofence } from '@ionic-native/geofence/ngx';
 export class StaffEdit {
   staffEditForm: FormGroup;
   item = {};
+  staff:any;
+  id:any;
   locations: any[] = [];
-  // email:string='';
-  // password:string='';
-  // business_types:string[] = ['Software Development', 'Graphic Design', 'Arts', 'Music', 'Digital Marketing', 'Furniture & Fittings'];
-  
+
   constructor(
     @Inject(AppComponent) private app: AppComponent,
+		private activatedRoute: ActivatedRoute,
     private homeService:HomeService, 
     private fb: FormBuilder,
     private api: Api,
@@ -54,6 +55,13 @@ export class StaffEdit {
 
   ngOnInit() {
     this.loadLocations();
+    const routeSubscription =  this.activatedRoute.params.subscribe(params => {
+			this.id = params.id;
+			if (this.id) {
+    this.loadStaff(this.id);
+			}
+		});
+		// this.subscriptions.push(routeSubscription);
   }
 
   get email () {
@@ -86,6 +94,39 @@ export class StaffEdit {
           // this.ux.alert(AppSettings.API_HTTP_FAIL_MESSAGE, "Error!", "error");
         }, () => {
             console.log('get:/locations finished');
+            // loader.dismiss();
+        }
+      );
+  }
+
+  async loadStaff(id) {
+    this.api.get('/staff/'+id)
+      .subscribe(
+        async (response: any) => {
+          console.log('get:/staff response:', response);
+          console.log('staffEditForm:', this.staffEditForm);
+          if(response) {
+            if(response.status == "success") {
+              this.staff = response.staff;
+			      	this.staffEditForm.value.name = this.staff.stf_name;
+			      	this.staffEditForm.value.no = this.staff.stf_no;
+			      	this.staffEditForm.value.email = this.staff.stf_email;
+			      	this.staffEditForm.value.password = this.staff.stf_password;
+			      	this.staffEditForm.value.loc_id = this.staff.stf_location_id;
+          console.log('staffEditForm:', this.staffEditForm.value);
+          // this.staffEditForm.value = this.staff;
+            } else {
+              this.ux.alert(response.message, "Error!", "error");
+            }
+          } else {
+            // this.ux.alert(AppSettings.API_EMPTY_RESPONSE_MESSAGE, "Error!", "error");
+          }
+        }, async error => {
+          // loader.dismiss();
+          // console.log('get:/locations error:', error);
+          // this.ux.alert(AppSettings.API_HTTP_FAIL_MESSAGE, "Error!", "error");
+        }, () => {
+            // console.log('get:/locations finished');
             // loader.dismiss();
         }
       );
