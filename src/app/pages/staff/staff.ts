@@ -61,6 +61,47 @@ export class Staff implements OnInit {
     private localNotifications: LocalNotifications
   ) {
 
+    this.customer = this.app.user;
+    this.route.queryParams
+      .subscribe(params => {
+        console.log("params=", params);
+        this.sub = params;
+      });
+  }
+
+  ngOnInit() {
+    
+  }
+ 
+  ionViewWillEnter() {
+
+    // get current location
+    this.setCurrentPosition();
+    // if a loc is set, get the location
+    if (this.sub.loc_id) {
+      this.getLocation();
+    }
+    // load the staff 
+    this.loadStaff();
+    // get the linked staff 
+    this.linkedStaff = this.deviceLinker.getLinkedStaff;
+    console.log("linkedStaff in staff", this.linkedStaff);
+  }
+
+  setCurrentPosition() {
+    // get current position
+    this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+      console.log('current position', resp);
+      this.position = {
+        lat: resp.coords.latitude,
+        lng: resp.coords.longitude
+      };
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
+
+  initBgGeolocation() {
     // background geolocation
     this.backgroundGeolocation.configure(config)
       .then(() => {
@@ -72,13 +113,13 @@ export class Staff implements OnInit {
               lng: location.longitude
             };
             // have we recorded a position at all?
-            if(this.position && this.position.lat && this.position.lng) {
+            if (this.position && this.position.lat && this.position.lng) {
               let newPositionWithinFence = this.pointWithinFence(newPosition, this.center, 1);
               let oldPositionWithinFence = this.pointWithinFence(this.position, this.center, 1);
               if (newPositionWithinFence) {
                 console.log("location within circle");
                 // was previous position outside the circle?
-                if(!oldPositionWithinFence) {
+                if (!oldPositionWithinFence) {
                   // Entering circle
                   // Alert that staff is back in the circle and carry out necessary actions
                   this.ux.alert("You have ENTERED the circle!");
@@ -86,7 +127,7 @@ export class Staff implements OnInit {
               } else {
                 console.log("location OUTSIDE circle!!!");
                 // was previous position within circle?
-                if(oldPositionWithinFence) {
+                if (oldPositionWithinFence) {
                   // Exiting circle
                   // Alert that staff is leaving the circle and carry out necessary actions
                   this.ux.alert("You have EXITED the circle!");
@@ -101,25 +142,6 @@ export class Staff implements OnInit {
 
     // start recording location
     this.backgroundGeolocation.start();
-
-    this.customer = this.app.user;
-    this.route.queryParams
-      .subscribe(params => {
-        console.log("params=", params);
-        this.sub = params;
-      });
-  }
-
-  ngOnInit() {
-    // if a loc is set, get the location
-    if (this.sub.loc_id) {
-      this.getLocation();
-    }
-    // load the staff 
-    this.loadStaff();
-    // get the linked staff 
-    this.linkedStaff = this.deviceLinker.getLinkedStaff;
-    console.log("linkedStaff in staff", this.linkedStaff);
   }
 
   unsub() {
@@ -154,7 +176,7 @@ export class Staff implements OnInit {
     var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
     return Math.sqrt(dx * dx + dy * dy) <= radius;
   }
-  
+
 
   async loadStaff() {
     console.log('loadStaff');
@@ -202,7 +224,8 @@ export class Staff implements OnInit {
               this.center = {
                 lat: +this.location.loc_lat,
                 lng: +this.location.loc_long
-              }
+              };
+              this.initBgGeolocation();
             } else {
               this.ux.alert(response.message, "Error!", "error");
             }
@@ -220,18 +243,18 @@ export class Staff implements OnInit {
       );
   }
 
- async onDelete(id:string) {
+  async onDelete(id: string) {
     console.log('onDelete called with id:', id);
-    if(confirm("Are you sure you want to delete this Staff?")) {
-      this.api.delete( '/staff/' + id)
+    if (confirm("Are you sure you want to delete this Staff?")) {
+      this.api.delete('/staff/' + id)
         .subscribe(
-          async (response:any) => {
+          async (response: any) => {
             console.log("delete department:", response);
-            if(response.status == 'success') {
+            if (response.status == 'success') {
               // remove from list
               this.loadStaff();
               // show success toast
-                this.ux.alert(response.message, "Success!", "success");
+              this.ux.alert(response.message, "Success!", "success");
             } else {
               // show error
               this.ux.alert(response.message, "Error!", "error");
