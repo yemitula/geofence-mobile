@@ -15,7 +15,7 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col class="register-logo-top" padding size="12" size-md="10" push-md="1">
-        <ion-button shape="round" button-round [routerLink]="['/location/edit']" >
+        <ion-button shape="round" button-round [routerLink]="['/locations/edit']" >
           Add a Location
         </ion-button>
       </ion-col>
@@ -45,6 +45,12 @@
             <ion-button [routerLink]="['/staff']" [queryParams]="{loc_id:location.loc_id}" >
               <ion-icon slot="start" name="person"></ion-icon>
               Staff List
+            </ion-button>
+            <ion-button fill="solid" color="warning" [routerLink]="['/locations/edit',location.loc_id]"  >
+              Edit Location
+            </ion-button>
+            <ion-button fill="solid" color="danger" (click)="onDelete(location.loc_id)"  >
+              Delete Location
             </ion-button>
           </ion-card-content>
         </ion-card>

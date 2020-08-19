@@ -38,7 +38,7 @@ export class StaffEdit {
       this.item = this.homeService.getData();
     
     this.staffEditForm = new FormGroup({
-      // id: new FormControl(),
+      id: new FormControl(),
       name: new FormControl(),
       no: new FormControl(),
       email: new FormControl(),
@@ -112,7 +112,7 @@ export class StaffEdit {
           if(response) {
             if(response.status == "success") {
               this.staff = response.staff;
-			      	// this.staffEditForm.controls.id.setValue(this.staff.stf_id);
+			      	this.staffEditForm.controls.id.setValue(this.staff.stf_id);
 			      	this.staffEditForm.controls.name.setValue(this.staff.stf_name);
 			      	this.staffEditForm.controls.no.setValue(this.staff.stf_no);
 			      	this.staffEditForm.controls.email.setValue(this.staff.stf_email);
@@ -143,7 +143,7 @@ export class StaffEdit {
         message: 'Updating Staff...',
       });
       loader.present();
-      staff.id=this.id;
+      // staff.id=this.id;
       this.api.put('staff', { staff: staff })
       .subscribe(
         async (response: any) => {
@@ -197,10 +197,6 @@ export class StaffEdit {
       );
     }
   }
-
-  // async onSubmit(){
-  //   if(this.staffEditForm.value.id){}
-  // }
 
   private addGeofence() {
     //options describing geofence

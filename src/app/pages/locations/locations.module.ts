@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { Locations } from './locations';
+import { LocationsEdit } from './locations-edit';
 
 @NgModule({
   imports: [
@@ -16,9 +17,17 @@ import { Locations } from './locations';
       {
         path: '',
         component: Locations
+      },
+      {
+        path: 'edit',
+        component: LocationsEdit
+      },
+      {
+        path: 'edit/:id',
+        component: LocationsEdit
       }
     ])
   ],
-  declarations: [Locations]
+  declarations: [Locations,LocationsEdit]
 })
 export class LocationsPageModule {}
