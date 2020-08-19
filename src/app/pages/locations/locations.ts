@@ -98,4 +98,28 @@ export class Locations implements OnInit {
     // Whenever the filter changes, always go back to the first page
     // this.table.offset = 0;
   }
+  
+ async onDelete(id:string) {
+  console.log('onDelete called with id:', id);
+  if(confirm("Are you sure you want to delete this Location?")) {
+    this.api.delete( '/locations/' + id)
+      .subscribe(
+        async (response:any) => {
+          console.log("delete department:", response);
+          if(response.status == 'success') {
+            // remove from list
+            this.loadLocations();
+            // show success toast
+              this.ux.alert(response.message, "Success!", "success");
+          } else {
+            // show error
+            this.ux.alert(response.message, "Error!", "error");
+          }
+        },
+        error => {
+          console.log("Server Error:", error);
+        }
+      );
+  }
+}
 }
