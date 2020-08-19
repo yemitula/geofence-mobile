@@ -320,6 +320,7 @@ export class Staff implements OnInit {
               this.initBgGeolocation();
               // success
               this.ux.toast(`${staff.stf_name} successfully LINKED to this Device!`);
+              // update staff with device id
               staff.stf_device_id = this.deviceId;
               this.updateStaff(staff);
             }
@@ -359,8 +360,12 @@ export class Staff implements OnInit {
             this.deviceLinker.unlink();
             this.linkedStaff = this.deviceLinker.getLinkedStaff;
             // TODO - stop watching geofence
+            this.backgroundGeolocation.stop();
             // success
             this.ux.toast(`${staff.stf_name} successfully UNLINKED from this Device!`);
+            // update staff with device id
+            staff.stf_device_id = '';
+            this.updateStaff(staff);
           }
         }
       ]
