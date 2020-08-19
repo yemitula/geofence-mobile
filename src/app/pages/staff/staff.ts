@@ -225,7 +225,7 @@ export class Staff implements OnInit {
                 lat: +this.location.loc_lat,
                 lng: +this.location.loc_long
               };
-              this.initBgGeolocation();
+              // this.initBgGeolocation();
             } else {
               this.ux.alert(response.message, "Error!", "error");
             }
@@ -270,33 +270,43 @@ export class Staff implements OnInit {
   async link(staff) {
     console.log("Staff -> link -> staff", staff);
 
-    const alert = await this.alertCtrl.create({
-      header: 'Confirm Linking',
-      message: `Are you sure you want to Link ${staff.stf_name} to this device? This device will START watching this staff's geofence.`,
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+    if(this.pointWithinFence(this.position, this.center, 1)) {
+      // point is within fence, proceed
+      const alert = await this.alertCtrl.create({
+        header: 'Confirm Linking',
+        message: `Are you sure you want to Link ${staff.stf_name} to this device? This device will START tracking this staff's location.`,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }, {
+            text: 'Sure!',
+            handler: () => {
+              console.log('Confirm Okay');
+              // link staff to this device
+              this.deviceLinker.link(staff);
+              this.linkedStaff = this.deviceLinker.getLinkedStaff;
+              // TODO - start watching geofence for staff
+              this.initBgGeolocation();
+              // success
+              this.ux.toast(`${staff.stf_name} successfully LINKED to this Device!`);
+            }
           }
-        }, {
-          text: 'Sure!',
-          handler: () => {
-            console.log('Confirm Okay');
-            // link staff to this device
-            this.deviceLinker.link(staff);
-            this.linkedStaff = this.deviceLinker.getLinkedStaff;
-            // TODO - start watching geofence for staff
-            // success
-            this.ux.toast(`${staff.stf_name} successfully LINKED to this Device!`);
-          }
-        }
-      ]
-    });
+        ]
+      });
+  
+      await alert.present();
+    } else {
+      // point not within fence
+      this.ux.alert("You must be at this Location to link this device!");
+      return false;
+    }
 
-    await alert.present();
+    
   }
 
   async unlink(staff) {
