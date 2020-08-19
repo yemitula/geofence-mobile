@@ -22,6 +22,7 @@
     "@capacitor/core": "^2.2.1",
     "@ionic-native/background-geolocation": "^5.27.0",
     "@ionic-native/core": "^5.0.7",
+    "@ionic-native/device": "^5.28.0",
     "@ionic-native/geofence": "^5.27.0",
     "@ionic-native/geolocation": "^5.28.0",
     "@ionic-native/local-notifications": "^5.27.0",

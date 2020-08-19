@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   // API_URL: 'https://tulabyte-geofence-api.herokuapp.com/index.php',
   // API_URL: 'http://localhost/geofence-api/index.php',
-  API_URL: 'http://192.168.8.34/geofence-api/index.php',
+  API_URL: 'http://192.168.8.34/geofence-api/index.php', // emulator on spectranet
+  // API_URL: 'http://192.168.0.154/geofence-api/index.php', // emulator on mtn
   DOCS_URL: 'http://localhost/mobile/geofence-app/docs/'
 };
 

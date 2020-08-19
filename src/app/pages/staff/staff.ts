@@ -10,6 +10,7 @@ import { DeviceLinker } from 'src/app/services/device-linker-service';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationEvents, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications, ILocalNotificationActionType } from '@ionic-native/local-notifications/ngx';
+import { Device } from '@ionic-native/device/ngx';
 
 export interface Coords {
   lat: number,
@@ -45,6 +46,7 @@ export class Staff implements OnInit {
     lat: 6.6473,
     lng: 3.3594
   };
+  deviceId: string;
 
   constructor(
     @Inject(AppComponent) private app: AppComponent,
@@ -58,7 +60,8 @@ export class Staff implements OnInit {
     private alertCtrl: AlertController,
     private backgroundGeolocation: BackgroundGeolocation,
     private geolocation: Geolocation,
-    private localNotifications: LocalNotifications
+    private localNotifications: LocalNotifications,
+    private device: Device
   ) {
 
     this.customer = this.app.user;
@@ -67,6 +70,9 @@ export class Staff implements OnInit {
         console.log("params=", params);
         this.sub = params;
       });
+    
+      this.deviceId = this.device.uuid;
+      console.log('Device ID:', this.deviceId);
   }
 
   ngOnInit() {
@@ -177,7 +183,6 @@ export class Staff implements OnInit {
     return Math.sqrt(dx * dx + dy * dy) <= radius;
   }
 
-
   async loadStaff() {
     console.log('loadStaff');
     let loader = await this.loading.create();
@@ -267,6 +272,27 @@ export class Staff implements OnInit {
     }
   }
 
+  async updateStaff(staff) {
+    console.log("updateStaff -> staff", staff);
+    let endpoint = `/staff/${staff.stf_id}`;
+    this.api.put(endpoint, { staff: staff })
+      .subscribe(
+        async (response: any) => {
+          console.log("put staff:", response);
+          if (response.status == 'success') {
+            // show success toast
+            this.ux.toast(response.message);
+          } else {
+            // show error
+            this.ux.alert(response.message, "Error!", "error");
+          }
+        },
+        error => {
+          console.log("Server Error:", error);
+        }
+      );
+  }
+
   async link(staff) {
     console.log("Staff -> link -> staff", staff);
 
@@ -294,6 +320,8 @@ export class Staff implements OnInit {
               this.initBgGeolocation();
               // success
               this.ux.toast(`${staff.stf_name} successfully LINKED to this Device!`);
+              staff.stf_device_id = this.deviceId;
+              this.updateStaff(staff);
             }
           }
         ]
