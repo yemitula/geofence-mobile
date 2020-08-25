@@ -87,11 +87,15 @@ export class Staff implements OnInit {
     if (this.sub.loc_id) {
       this.getLocation();
     }
-    // load the staff 
-    this.loadStaff();
     // get the linked staff 
     this.linkedStaff = this.deviceLinker.getLinkedStaff;
     console.log("linkedStaff in staff", this.linkedStaff);
+    // if staff is linked
+    if(this.deviceLinker.isDeviceLinked) {
+      this.initBgGeolocation();
+    }
+    // load the staff 
+    this.loadStaff();
   }
 
   setCurrentPosition() {
