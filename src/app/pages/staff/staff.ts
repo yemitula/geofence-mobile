@@ -87,18 +87,12 @@ export class Staff implements OnInit {
     if (this.sub.loc_id) {
       this.getLocation();
     }
-    // get the linked staff 
-    this.linkedStaff = this.deviceLinker.getLinkedStaff;
-    console.log("linkedStaff in staff", this.linkedStaff);
-    // if staff is linked
-    if(this.deviceLinker.isDeviceLinked) {
-      this.initBgGeolocation();
-    }
-    // load the staff 
+    // load the staff list
     this.loadStaff();
   }
 
   setCurrentPosition() {
+    console.log("Staff -> setCurrentPosition");
     // get current position
     this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
       console.log('current position', resp);
@@ -106,12 +100,21 @@ export class Staff implements OnInit {
         lat: resp.coords.latitude,
         lng: resp.coords.longitude
       };
+      // get the linked staff 
+      this.linkedStaff = this.deviceLinker.getLinkedStaff;
+      console.log("linkedStaff in staff", this.linkedStaff);
+      // if staff is linked
+      if(this.deviceLinker.isDeviceLinked) {
+        this.initBgGeolocation();
+      }
     }).catch((error) => {
       console.log('Error getting location', error);
     });
   }
 
   initBgGeolocation() {
+    console.log("initBgGeolocation -> initBgGeolocation");
+    
     // background geolocation
     this.backgroundGeolocation.configure(config)
       .then(() => {
@@ -127,20 +130,24 @@ export class Staff implements OnInit {
               let newPositionWithinFence = this.pointWithinFence(newPosition, this.center, 1);
               let oldPositionWithinFence = this.pointWithinFence(this.position, this.center, 1);
               if (newPositionWithinFence) {
-                console.log("location within circle");
+                console.log("position within circle");
                 // was previous position outside the circle?
                 if (!oldPositionWithinFence) {
                   // Entering circle
                   // Alert that staff is back in the circle and carry out necessary actions
                   this.ux.alert("You have ENTERED the circle!");
+                } else {
+                  this.ux.toast("You are within the circle");
                 }
               } else {
-                console.log("location OUTSIDE circle!!!");
+                console.log("position OUTSIDE circle!!!");
                 // was previous position within circle?
                 if (oldPositionWithinFence) {
                   // Exiting circle
                   // Alert that staff is leaving the circle and carry out necessary actions
                   this.ux.alert("You have EXITED the circle!");
+                } else {
+                  this.ux.toast("You are NOT within the circle");
                 }
               }
             }
@@ -180,6 +187,7 @@ export class Staff implements OnInit {
   // check if a point is within a circular fence, radius is in km
   // https://stackoverflow.com/questions/24680247/check-if-a-latitude-and-longitude-is-within-a-circle-google-maps
   pointWithinFence(checkPoint, centerPoint, radius) {
+    console.log("pointWithinFence -> checkPoint, centerPoint, radius", checkPoint, centerPoint, radius);
     var ky = 40000 / 360;
     var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;
     var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
@@ -188,7 +196,7 @@ export class Staff implements OnInit {
   }
 
   async loadStaff() {
-    console.log('loadStaff');
+    console.log('loadStaff -> loc_id', this.sub.loc_id);
     let loader = await this.loading.create();
     loader.present();
     this.api.get('staff?loc_id=' + this.sub.loc_id || '')
