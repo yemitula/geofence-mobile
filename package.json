@@ -34,9 +34,7 @@
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-androidx": "^2.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
-    "cordova-plugin-background-geolocation": "^1.0.6",
     "cordova-plugin-badge": "^0.8.8",
-    "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-geofence": "git+https://github.com/compelling/cordova-plugin-geofence.git",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
@@ -92,16 +90,6 @@
       "cordova-plugin-geofence": {},
       "cordova-plugin-add-swift-support": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-background-geolocation": {
-        "GOOGLE_PLAY_SERVICES_VERSION": "11+",
-        "ANDROID_SUPPORT_LIBRARY_VERSION": "26+",
-        "ICON": "@mipmap/icon",
-        "SMALL_ICON": "@mipmap/icon",
-        "ACCOUNT_NAME": "@string/app_name",
-        "ACCOUNT_LABEL": "@string/app_name",
-        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
-        "CONTENT_AUTHORITY": "$PACKAGE_NAME"
-      },
       "cordova-plugin-local-notification": {}
     },
     "platforms": [
