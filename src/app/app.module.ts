@@ -20,6 +20,7 @@ import { Geofence } from '@ionic-native/geofence/ngx';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { Device } from '@ionic-native/device/ngx';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     BackgroundGeolocation,
     LocalNotifications,
     Geolocation,
+    Device,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],

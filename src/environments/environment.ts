@@ -4,9 +4,11 @@
 
 export const environment = {
   production: false,
-  // API_URL: 'https://tulabyte-geofence-api.herokuapp.com/index.php',
-  // API_URL: 'http://localhost/geofence-api/index.php',
-  API_URL: 'http://192.168.8.34/geofence-api/index.php',
+  // API_URL: 'https://tulabyte-geofence-api.herokuapp.com/index.php', // heroku
+  // API_URL: 'http://localhost/geofence-api/index.php', // localhost
+  // API_URL: 'http://192.168.8.34/geofence-api/index.php', // emulator api on spectranet
+  // API_URL: 'http://192.168.0.154/geofence-api/index.php', // emulator api on mtn
+  API_URL: 'https://tulabyte.net/geofence-api/index.php', // tulabyte.net
   DOCS_URL: 'http://localhost/mobile/geofence-app/docs/'
 };
 

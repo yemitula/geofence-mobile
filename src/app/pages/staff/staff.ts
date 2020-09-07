@@ -10,6 +10,7 @@ import { DeviceLinker } from 'src/app/services/device-linker-service';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationEvents, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications, ILocalNotificationActionType } from '@ionic-native/local-notifications/ngx';
+import { Device } from '@ionic-native/device/ngx';
 
 export interface Coords {
   lat: number,
@@ -45,6 +46,7 @@ export class Staff implements OnInit {
     lat: 6.6473,
     lng: 3.3594
   };
+  deviceId: string;
 
   constructor(
     @Inject(AppComponent) private app: AppComponent,
@@ -58,7 +60,8 @@ export class Staff implements OnInit {
     private alertCtrl: AlertController,
     private backgroundGeolocation: BackgroundGeolocation,
     private geolocation: Geolocation,
-    private localNotifications: LocalNotifications
+    private localNotifications: LocalNotifications,
+    private device: Device
   ) {
 
     this.customer = this.app.user;
@@ -67,6 +70,9 @@ export class Staff implements OnInit {
         console.log("params=", params);
         this.sub = params;
       });
+    
+      this.deviceId = this.device.uuid;
+      console.log('Device ID:', this.deviceId);
   }
 
   ngOnInit() {
@@ -81,14 +87,12 @@ export class Staff implements OnInit {
     if (this.sub.loc_id) {
       this.getLocation();
     }
-    // load the staff 
+    // load the staff list
     this.loadStaff();
-    // get the linked staff 
-    this.linkedStaff = this.deviceLinker.getLinkedStaff;
-    console.log("linkedStaff in staff", this.linkedStaff);
   }
 
   setCurrentPosition() {
+    console.log("Staff -> setCurrentPosition");
     // get current position
     this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
       console.log('current position', resp);
@@ -96,12 +100,21 @@ export class Staff implements OnInit {
         lat: resp.coords.latitude,
         lng: resp.coords.longitude
       };
+      // get the linked staff 
+      this.linkedStaff = this.deviceLinker.getLinkedStaff;
+      console.log("linkedStaff in staff", this.linkedStaff);
+      // if staff is linked
+      if(this.deviceLinker.isDeviceLinked) {
+        this.initBgGeolocation();
+      }
     }).catch((error) => {
       console.log('Error getting location', error);
     });
   }
 
   initBgGeolocation() {
+    console.log("initBgGeolocation -> initBgGeolocation");
+    
     // background geolocation
     this.backgroundGeolocation.configure(config)
       .then(() => {
@@ -117,20 +130,24 @@ export class Staff implements OnInit {
               let newPositionWithinFence = this.pointWithinFence(newPosition, this.center, 1);
               let oldPositionWithinFence = this.pointWithinFence(this.position, this.center, 1);
               if (newPositionWithinFence) {
-                console.log("location within circle");
+                console.log("position within circle");
                 // was previous position outside the circle?
                 if (!oldPositionWithinFence) {
                   // Entering circle
                   // Alert that staff is back in the circle and carry out necessary actions
                   this.ux.alert("You have ENTERED the circle!");
+                } else {
+                  this.ux.toast("You are within the circle");
                 }
               } else {
-                console.log("location OUTSIDE circle!!!");
+                console.log("position OUTSIDE circle!!!");
                 // was previous position within circle?
                 if (oldPositionWithinFence) {
                   // Exiting circle
                   // Alert that staff is leaving the circle and carry out necessary actions
                   this.ux.alert("You have EXITED the circle!");
+                } else {
+                  this.ux.toast("You are NOT within the circle");
                 }
               }
             }
@@ -170,6 +187,7 @@ export class Staff implements OnInit {
   // check if a point is within a circular fence, radius is in km
   // https://stackoverflow.com/questions/24680247/check-if-a-latitude-and-longitude-is-within-a-circle-google-maps
   pointWithinFence(checkPoint, centerPoint, radius) {
+    console.log("pointWithinFence -> checkPoint, centerPoint, radius", checkPoint, centerPoint, radius);
     var ky = 40000 / 360;
     var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;
     var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
@@ -177,9 +195,8 @@ export class Staff implements OnInit {
     return Math.sqrt(dx * dx + dy * dy) <= radius;
   }
 
-
   async loadStaff() {
-    console.log('loadStaff');
+    console.log('loadStaff -> loc_id', this.sub.loc_id);
     let loader = await this.loading.create();
     loader.present();
     this.api.get('staff?loc_id=' + this.sub.loc_id || '')
@@ -267,6 +284,27 @@ export class Staff implements OnInit {
     }
   }
 
+  async updateStaff(staff) {
+    console.log("updateStaff -> staff", staff);
+    let endpoint = `/staff/${staff.stf_id}`;
+    this.api.put(endpoint, { staff: staff })
+      .subscribe(
+        async (response: any) => {
+          console.log("put staff:", response);
+          if (response.status == 'success') {
+            // show success toast
+            this.ux.toast(response.message);
+          } else {
+            // show error
+            this.ux.alert(response.message, "Error!", "error");
+          }
+        },
+        error => {
+          console.log("Server Error:", error);
+        }
+      );
+  }
+
   async link(staff) {
     console.log("Staff -> link -> staff", staff);
 
@@ -294,6 +332,9 @@ export class Staff implements OnInit {
               this.initBgGeolocation();
               // success
               this.ux.toast(`${staff.stf_name} successfully LINKED to this Device!`);
+              // update staff with device id
+              staff.stf_device_id = this.deviceId;
+              this.updateStaff(staff);
             }
           }
         ]
@@ -331,8 +372,12 @@ export class Staff implements OnInit {
             this.deviceLinker.unlink();
             this.linkedStaff = this.deviceLinker.getLinkedStaff;
             // TODO - stop watching geofence
+            this.backgroundGeolocation.stop();
             // success
             this.ux.toast(`${staff.stf_name} successfully UNLINKED from this Device!`);
+            // update staff with device id
+            staff.stf_device_id = '';
+            this.updateStaff(staff);
           }
         }
       ]
