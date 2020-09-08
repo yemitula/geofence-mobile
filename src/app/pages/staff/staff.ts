@@ -130,24 +130,25 @@ export class Staff implements OnInit {
               let newPositionWithinFence = this.pointWithinFence(newPosition, this.center, 1);
               let oldPositionWithinFence = this.pointWithinFence(this.position, this.center, 1);
               if (newPositionWithinFence) {
-                console.log("position within circle");
-                // was previous position outside the circle?
+                console.log("position within fence");
+                // was previous position outside the fence?
                 if (!oldPositionWithinFence) {
-                  // Entering circle
-                  // Alert that staff is back in the circle and carry out necessary actions
-                  this.ux.alert("You have ENTERED the circle!");
+                  // Entering fence
+                  // Alert that staff is back in the fence and carry out necessary actions
+                  this.ux.alert("You have ENTERED the fence!");
                 } else {
-                  this.ux.toast("You are within the circle");
+                  this.ux.toast("You are within the fence");
                 }
               } else {
-                console.log("position OUTSIDE circle!!!");
-                // was previous position within circle?
+                console.log("position OUTSIDE fence!!!");
+                // was previous position within fence?
                 if (oldPositionWithinFence) {
-                  // Exiting circle
-                  // Alert that staff is leaving the circle and carry out necessary actions
-                  this.ux.alert("You have EXITED the circle!");
+                  // Exiting fence
+                  // Alert that staff is leaving the fence and carry out necessary actions
+                  // this.ux.alert("You have EXITED the fence!");
+                  this.promptForExit();
                 } else {
-                  this.ux.toast("You are NOT within the circle");
+                  this.ux.toast("You are NOT within the fence");
                 }
               }
             }
@@ -159,6 +160,67 @@ export class Staff implements OnInit {
 
     // start recording location
     this.backgroundGeolocation.start();
+  }
+
+  async promptForExit() {
+    const alert = await this.alertCtrl.create({
+      header: 'Exiting the fence? Please provide safecode!',
+      inputs: [
+        {
+          name: 'safeCode',
+          type: 'password',
+          placeholder: '******'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Submit',
+          handler: (data) => {
+            console.log('Submit clicked with data:', data);
+            if (data.safeCode) {
+              this.handleSafeCode(data.safeCode);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async handleSafeCode(safeCode) {
+    console.log("handleSafeCode -> safeCode", safeCode);
+    // check if the safeCode is correct
+    if(safeCode) {
+      // create exit object
+      let fenceExit = {
+        fex_staff_id: this.linkedStaff.stf_id,
+        fex_location_id: this.linkedStaff.loc_id,
+        fex_lat: this.linkedStaff.loc_lat,
+        fex_long: this.linkedStaff.loc_long,
+        fex_code_expected: this.linkedStaff.stf_safety_code,
+        fex_code_supplied: safeCode,
+        fex_is_safe: safeCode === this.linkedStaff.stf_safety_code ? 1 : 0
+      };
+      // create the exit object in the api
+      let endpoint = `exits`;
+      this.api.post(endpoint, { fence_exit: fenceExit })
+        .subscribe(
+          async (response: any) => {
+            console.log("post " + endpoint, response);
+            if (response.status == 'success') {
+              // show success toast
+              this.ux.toast(response.message);
+            } else {
+              // show error
+              this.ux.toast(response.message);
+            }
+          },
+          error => {
+            console.log("Server Error:", error);
+          }
+        );
+    }
   }
 
   unsub() {
@@ -237,7 +299,7 @@ export class Staff implements OnInit {
           if (response) {
             if (response.status == "success") {
               this.location = response.location;
-              // set center of circle
+              // set center of fence
               this.center = {
                 lat: +this.location.loc_lat,
                 lng: +this.location.loc_long
