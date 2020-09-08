@@ -47,6 +47,8 @@ export class Staff implements OnInit {
     lng: 3.3594
   };
   deviceId: string;
+  logIntervalId: any;
+  fenceExit: any;
 
   constructor(
     @Inject(AppComponent) private app: AppComponent,
@@ -135,7 +137,8 @@ export class Staff implements OnInit {
                 if (!oldPositionWithinFence) {
                   // Entering fence
                   // Alert that staff is back in the fence and carry out necessary actions
-                  this.ux.alert("You have ENTERED the fence!");
+                  // this.ux.alert("You have ENTERED the fence!");
+                  this.stopLocationLogging();
                 } else {
                   this.ux.toast("You are within the fence");
                 }
@@ -203,24 +206,98 @@ export class Staff implements OnInit {
         fex_is_safe: safeCode === this.linkedStaff.stf_safety_code ? 1 : 0
       };
       // create the exit object in the api
+      let loader = await this.loading.create();
+      loader.present();
       let endpoint = `exits`;
       this.api.post(endpoint, { fence_exit: fenceExit })
         .subscribe(
           async (response: any) => {
+            loader.dismiss();
             console.log("post " + endpoint, response);
             if (response.status == 'success') {
+              this.fenceExit = { fex_id: response.fex_id, ...fenceExit };
+              console.log("fenceExit after post:", this.fenceExit);
               // show success toast
               this.ux.toast(response.message);
+              // set log interval
+              this.setLocationLog(fenceExit.fex_is_safe);
             } else {
               // show error
               this.ux.toast(response.message);
             }
           },
           error => {
+            loader.dismiss();
             console.log("Server Error:", error);
           }
         );
     }
+  }
+
+  setLocationLog(isSafe) {
+    let logInterval = 60000;
+    if(isSafe === 1) {
+      logInterval = 900000;
+    }
+    // start logging the location 
+    this.logIntervalId = setInterval(() => {
+      this.logExitLocation();
+    }, logInterval);
+  }
+
+  stopLocationLogging() {
+    console.log("stopLocationLogging");
+    // stop logging
+    clearInterval(this.logIntervalId);
+    // get the current position
+    this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+      console.log('current position', resp);
+      let movement = {
+        mov_exit_id: this.fenceExit.fex_id,
+        mov_lat: resp.coords.latitude,
+        mov_long: resp.coords.longitude
+      }
+      // silently post the location on api
+      let endpoint = `movements?stop=yes`;
+      this.api.post(endpoint, { movement: movement })
+        .subscribe(
+          async (response: any) => {
+            console.log("post " + endpoint, response);
+          },
+          error => {
+            console.log("Server Error:", error);
+          }
+        );
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
+
+  async logExitLocation() {
+    console.log("logExitLocation -> logExitLocation");
+    // get current location
+    this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+      console.log('current position', resp);
+      let movement = {
+        mov_exit_id: this.fenceExit.fex_id,
+        mov_lat: resp.coords.latitude,
+        mov_long: resp.coords.longitude
+      }
+      // silently post the location on api
+      let endpoint = `movements`;
+      this.api.post(endpoint, { movement: movement })
+        .subscribe(
+          async (response: any) => {
+            console.log("post " + endpoint, response);
+          },
+          error => {
+            console.log("Server Error:", error);
+          }
+        );
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+    
   }
 
   unsub() {
