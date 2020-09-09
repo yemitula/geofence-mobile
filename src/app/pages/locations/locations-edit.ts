@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, NgZone } from '@angular/core';
 import { ModalController, LoadingController, NavController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { AppSettings } from './../../services/app-settings';
@@ -9,6 +9,7 @@ import { Ux } from 'src/app/services/ux-service';
 import { AuthService } from 'src/app/services/auth-service';
 import { AppComponent } from 'src/app/app.component';
 import { Geofence } from '@ionic-native/geofence/ngx';
+import {} from 'googlemaps';
 
 @Component({
   selector: 'app-locations-edit',
@@ -22,6 +23,12 @@ export class LocationsEdit {
   location:any={};
   id:any;
   // locations: any[] = [];
+  autocomplete: any;
+  GoogleAutocomplete : any;
+  GooglePlaces: any;
+  geocoder: any;
+  autocompleteItems: any;
+  nearbyItems: any = new Array<any>();
 
   constructor(
     @Inject(AppComponent) private app: AppComponent,
@@ -33,19 +40,29 @@ export class LocationsEdit {
     private auth: AuthService,
     private nav: NavController,
     private loading: LoadingController,
-    private geofence: Geofence
+    private geofence: Geofence,
+    public zone: NgZone
     ) { 
       this.item = this.homeService.getData();
     
     this.locationEditForm = new FormGroup({
       loc_id: new FormControl(),
       loc_name: new FormControl(),
-      loc_address: new FormControl(),
+      // loc_address: new FormControl(),
+      // loc_address1: new FormControl(),
       loc_radius: new FormControl(),
       loc_lat: new FormControl(),
       loc_long: new FormControl()
    });
-  }
+    this.geocoder = new google.maps.Geocoder;
+    let elem = document.createElement("div")
+    this.GooglePlaces = new google.maps.places.PlacesService(elem);
+    this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+    this.autocomplete = {
+      input: ''
+    };
+    this.autocompleteItems = [];
+}
 
   ngOnInit() {
     // this.loadLocations();
@@ -67,6 +84,47 @@ export class LocationsEdit {
   // get password () {
   //   return this.locationEditForm.get('password');
   // }
+  async updateSearchResults(){
+    if (this.autocomplete.input == '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+    (predictions, status) => {
+      this.autocompleteItems = [];
+      if(predictions){
+        this.zone.run(() => {
+          predictions.forEach((prediction) => {
+            this.autocompleteItems.push(prediction);
+          });
+        });
+      }
+    });
+  }
+
+  selectSearchResult(item){
+    this.autocompleteItems = [];
+    this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
+      if(status === 'OK' && results[0]){
+        console.log("location=",results);
+        this.autocomplete.input = results[0].formatted_address;
+        this.autocompleteItems = [];
+        this.GooglePlaces.nearbySearch({
+          location: results[0].geometry.location,
+          radius: '500',
+          types: ['restaurant'], //check other types here https://developers.google.com/places/web-service/supported_types
+          // key: 'YOUR_KEY_HERE'
+        }, (near_places) => {
+          this.zone.run(() => {
+            this.nearbyItems = [];
+            for (var i = 0; i < near_places.length; i++) {
+              this.nearbyItems.push(near_places[i]);
+            }
+          });
+        })
+      }
+    })
+  }
 
   async loadLocation(id) {
     this.api.get('/locations/'+id)
@@ -79,7 +137,7 @@ export class LocationsEdit {
               this.location = response.location;
 			      	this.locationEditForm.controls.loc_id.setValue(this.location.loc_id);
 			      	this.locationEditForm.controls.loc_name.setValue(this.location.loc_name);
-			      	this.locationEditForm.controls.loc_address.setValue(this.location.loc_address);
+			      	// this.locationEditForm.controls.loc_address.setValue(this.location.loc_address);
 			      	this.locationEditForm.controls.loc_radius.setValue(this.location.loc_radius);
 			      	this.locationEditForm.controls.loc_lat.setValue(this.location.loc_lat);
               this.locationEditForm.controls.loc_long.setValue(this.location.loc_long);

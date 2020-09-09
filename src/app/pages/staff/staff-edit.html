@@ -40,13 +40,8 @@
                 <ion-input required type="password" formControlName="password" ></ion-input>
                 <!-- <ion-icon *ngIf="password.dirty && password.invalid" icon-small name="remove-circle"></ion-icon> -->
               </ion-item>
-              <!-- <ion-item no-padding input>
-                <ion-label text-size-xs position="floating">Location</ion-label>
-                <ion-input required type="text" formControlName="loc_id" ></ion-input>
-              </ion-item> -->
               <ion-item no-padding input>
                 <ion-label>Location</ion-label>
-                <!-- <ion-select  interface="popover" [(ngModel)]="cat_id" (ionChange)="selectCategory(cat_id)"> -->
                 <ion-select  interface="popover" formControlName="loc_id" required>
                   <ion-select-option *ngFor="let location of locations" [value]="location.loc_id">{{location.loc_name}} </ion-select-option>
                 </ion-select>
