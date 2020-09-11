@@ -22,17 +22,25 @@
                 <ion-input required type="text" formControlName="loc_name" ></ion-input>
               </ion-item>
               <!---Input field username-->
-              <ion-item no-padding input>
+              <!-- <ion-item no-padding input>
                 <ion-label text-size-xs position="floating">Address</ion-label>
                 <ion-input required type="text" formControlName="loc_address" ></ion-input>
+              </ion-item> -->
+              <ion-item no-padding input>
+                <!-- <input formControlName="loc_address1"> -->
+                <ion-label text-size-xs position="floating">Address</ion-label>
+                <ion-input [(ngModel)]="autocomplete.input" [ngModelOptions]="{standalone: true}" (ionInput)="updateSearchResults()"></ion-input>
               </ion-item>
+              <ion-list [hidden]="autocompleteItems.length == 0">
+                <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+                  <!-- <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)"> -->
+                  {{ item.description }}
+                </ion-item>
+              </ion-list>
               <!-- <ion-item no-padding input>
-                <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
-              </ion-item>
-              <ion-item no-padding input>
                 <input places-auto-complete types="['geocode']" on-place-changed="myCallback(place)" component-restrictions="{country:'au'}"/>
-              </ion-item>
-              <ion-item no-padding input>
+              </ion-item> -->
+              <!-- <ion-item no-padding input>
                 <ion-label text-size-xs position="floating">Latitude</ion-label>
                 <div id='map'></div>
               </ion-item> -->
