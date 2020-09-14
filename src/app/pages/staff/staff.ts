@@ -129,8 +129,8 @@ export class Staff implements OnInit {
             };
             // have we recorded a position at all?
             if (this.position && this.position.lat && this.position.lng) {
-              let newPositionWithinFence = this.pointWithinFence(newPosition, this.center, 1);
-              let oldPositionWithinFence = this.pointWithinFence(this.position, this.center, 1);
+              let newPositionWithinFence = this.pointWithinFence(newPosition, this.center, +this.linkedStaff.loc_radius);
+              let oldPositionWithinFence = this.pointWithinFence(this.position, this.center, +this.linkedStaff.loc_radius);
               if (newPositionWithinFence) {
                 console.log("position within fence");
                 // was previous position outside the fence?
@@ -140,7 +140,7 @@ export class Staff implements OnInit {
                   // this.ux.alert("You have ENTERED the fence!");
                   this.stopLocationLogging();
                 } else {
-                  this.ux.toast("You are within the fence");
+                  this.ux.toast(`You are within the fence - ${this.distanceFromCenter(newPosition, this.center)}km from center`);
                 }
               } else {
                 console.log("position OUTSIDE fence!!!");
@@ -334,6 +334,15 @@ export class Staff implements OnInit {
     return Math.sqrt(dx * dx + dy * dy) <= radius;
   }
 
+  distanceFromCenter(checkPoint, centerPoint) {
+    console.log("distanceFromCenter -> checkPoint, centerPoint, radius", checkPoint, centerPoint);
+    var ky = 40000 / 360;
+    var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;
+    var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
+    var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+    return (Math.sqrt(dx * dx + dy * dy)).toFixed(2);
+  }
+
   async loadStaff() {
     console.log('loadStaff -> loc_id', this.sub.loc_id);
     let loader = await this.loading.create();
@@ -447,7 +456,7 @@ export class Staff implements OnInit {
   async link(staff) {
     console.log("Staff -> link -> staff", staff);
 
-    if(this.pointWithinFence(this.position, this.center, 1)) {
+    if(this.pointWithinFence(this.position, this.center, +staff.loc_radius)) {
       // point is within fence, proceed
       const alert = await this.alertCtrl.create({
         header: 'Confirm Linking',
