@@ -29,11 +29,10 @@
               <ion-item no-padding input>
                 <!-- <input formControlName="loc_address1"> -->
                 <ion-label text-size-xs position="floating">Address</ion-label>
-                <ion-input [(ngModel)]="autocomplete.input" [ngModelOptions]="{standalone: true}" (ionInput)="updateSearchResults()"></ion-input>
+                <ion-input [(ngModel)]="autocomplete.input" [ngModelOptions]="{standalone: true}" (ionInput)="updateSearchResults()" location="location"></ion-input>
               </ion-item>
               <ion-list [hidden]="autocompleteItems.length == 0">
                 <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-                  <!-- <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)"> -->
                   {{ item.description }}
                 </ion-item>
               </ion-list>

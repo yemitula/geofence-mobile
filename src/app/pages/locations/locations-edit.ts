@@ -48,7 +48,7 @@ export class LocationsEdit {
     this.locationEditForm = new FormGroup({
       loc_id: new FormControl(),
       loc_name: new FormControl(),
-      // loc_address: new FormControl(),
+      loc_address: new FormControl(),
       // loc_address1: new FormControl(),
       loc_radius: new FormControl(),
       loc_lat: new FormControl(),
@@ -106,8 +106,9 @@ export class LocationsEdit {
     this.autocompleteItems = [];
     this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
       if(status === 'OK' && results[0]){
-        console.log("location=",results);
         this.autocomplete.input = results[0].formatted_address;
+        this.locationEditForm.controls.loc_lat.setValue(results[0].geometry.location.lat());
+        this.locationEditForm.controls.loc_long.setValue(results[0].geometry.location.lng());
         this.autocompleteItems = [];
         this.GooglePlaces.nearbySearch({
           location: results[0].geometry.location,
@@ -136,7 +137,8 @@ export class LocationsEdit {
             if(response.status == "success") {
               this.location = response.location;
 			      	this.locationEditForm.controls.loc_id.setValue(this.location.loc_id);
-			      	this.locationEditForm.controls.loc_name.setValue(this.location.loc_name);
+              this.locationEditForm.controls.loc_name.setValue(this.location.loc_name);
+              this.autocomplete.input = this.location.loc_address;
 			      	// this.locationEditForm.controls.loc_address.setValue(this.location.loc_address);
 			      	this.locationEditForm.controls.loc_radius.setValue(this.location.loc_radius);
 			      	this.locationEditForm.controls.loc_lat.setValue(this.location.loc_lat);
@@ -159,6 +161,7 @@ export class LocationsEdit {
   }
 
   async locationEdit() {
+    this.locationEditForm.controls.loc_address.setValue(this.autocomplete.input);
     console.log('locationEditForm:', this.locationEditForm);
     console.log('locationEdit called!:', this.locationEditForm.value);
     let location = this.locationEditForm.value;
