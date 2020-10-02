@@ -321,6 +321,18 @@ export class Staff implements OnInit {
       // sticky: true,
       data: { secret: 'X121212121' }
     });
+    this.api.get('checkExpiringRequests')
+      .subscribe(
+        async (response: any) => {
+          console.log('get:checkExpiringRequests:', response);
+          if (response) {
+            // if (response.status == "success") {
+            //   this.all = response.staff;
+            //   this.staff = [... this.all];
+            // }
+          }
+        }
+      );
   }
 
   // check if a point is within a circular fence, radius is in km
