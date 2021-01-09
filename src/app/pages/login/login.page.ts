@@ -78,7 +78,7 @@ export class LoginPage {
               this.auth.userLogin(user);
               // this.app.showSidebar = true;
               this.app.setUser(user);
-              this.nav.navigateRoot(['/locations']);
+              this.nav.navigateRoot(['/notifications']);
               this.ux.toast("Login successful");
             } else {
               this.ux.alert(response.message, "Error!", "error");

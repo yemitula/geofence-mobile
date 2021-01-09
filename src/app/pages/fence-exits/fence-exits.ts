@@ -51,7 +51,7 @@ export class FenceExits implements OnInit {
         }
       });
     
-    // load the staff 
+    // load the exit 
     this.loadFenceExits();
   }
 

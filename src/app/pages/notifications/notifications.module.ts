@@ -4,8 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
-import { FenceExits } from './fence-exits';
-import { FenceExitsDetail } from './fence-exits-detail';
+import { Notifications } from './notifications';
 
 @NgModule({
   imports: [
@@ -16,13 +15,10 @@ import { FenceExitsDetail } from './fence-exits-detail';
     RouterModule.forChild([
       {
         path: '',
-        component: FenceExits
-      },{
-        path: 'detail/:id',
-        component: FenceExitsDetail
+        component: Notifications
       }
     ])
   ],
-  declarations: [FenceExits,FenceExitsDetail]
+  declarations: [Notifications]
 })
-export class FenceExitsPageModule {}
+export class NotificationsPageModule {}

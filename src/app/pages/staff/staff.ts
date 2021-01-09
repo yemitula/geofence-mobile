@@ -137,7 +137,7 @@ export class Staff implements OnInit {
                 if (!oldPositionWithinFence) {
                   // Entering fence
                   // Alert that staff is back in the fence and carry out necessary actions
-                  // this.ux.alert("You have ENTERED the fence!");
+                  this.ux.alert("You have ENTERED the fence!");
                   this.stopLocationLogging();
                 } else {
                   this.ux.toast(`You are within the fence - ${this.distanceFromCenter(newPosition, this.center)}km from center`);
@@ -148,7 +148,7 @@ export class Staff implements OnInit {
                 if (oldPositionWithinFence) {
                   // Exiting fence
                   // Alert that staff is leaving the fence and carry out necessary actions
-                  // this.ux.alert("You have EXITED the fence!");
+                  this.ux.alert("You have EXITED the fence!");
                   this.promptForExit();
                 } else {
                   this.ux.toast("You are NOT within the fence");
@@ -273,6 +273,36 @@ export class Staff implements OnInit {
     });
   }
 
+  // async logInitialExit() {
+  //   console.log("logInitialExit -> logInitialExit");
+  //   // get current location
+  //   this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+  //     console.log('current position', resp);
+  //     let fence_exit = {
+  //       fex_staff_id: this.linkedStaff.stf_id,
+  //       fex_location_id: this.linkedStaff.stf_location_id,
+  //       // mov_exit_id: this.fenceExit.fex_id,
+  //       fex_lat: resp.coords.latitude,
+  //       fex_long: resp.coords.longitude,
+  //       fex_code_expected: this.linkedStaff.stf_safety_code
+  //     }
+  //     // silently post the location on api
+  //     let endpoint = `exits`;
+  //     this.api.post(endpoint, { fence_exit: fence_exit })
+  //       .subscribe(
+  //         async (response: any) => {
+  //           console.log("post " + endpoint, response);
+  //         },
+  //         error => {
+  //           console.log("Server Error:", error);
+  //         }
+  //       );
+  //   }).catch((error) => {
+  //     console.log('Error getting location', error);
+  //   });
+    
+  // }
+
   async logExitLocation() {
     console.log("logExitLocation -> logExitLocation");
     // get current location
@@ -343,6 +373,9 @@ export class Staff implements OnInit {
     var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;
     var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
     var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+    console.log("dx, dy", dx, dy);
+    console.log(Math.sqrt(dx * dx + dy * dy));
+
     return Math.sqrt(dx * dx + dy * dy) <= radius;
   }
 

@@ -28,7 +28,7 @@
             <h1>{{staff?.stf_name}}</h1>
           </ion-label>
         </ion-item-divider>
-          <ion-searchbar *ngIf="all?.length && all?.length > 1" placeholder="Search by name/email/number" (ionChange)="filterList($event)"></ion-searchbar>
+          <ion-searchbar *ngIf="all?.length && all?.length > 1" placeholder="Search by name/address" (ionChange)="filterList($event)"></ion-searchbar>
       </ion-col>
       <ion-col size="12" size-md="6" *ngIf="!exits?.length">
         <ion-card box-shadow class="ion-text-start"  padding-bottom>
@@ -45,10 +45,14 @@
           <!--Card content-->
           <ion-card-content transparent>
             <ion-card-title padding-top>
-              <p title-card text-size-xs>{{exit?.stf_name}}</p>
+              <!-- <p title-card text-size-xs>{{exit?.stf_name}}</p> -->
               <p text-size-sm>{{exit.loc_address}}</p>
             </ion-card-title>
-            <ion-button fill="solid" color="primary" [routerLink]="['/movements']" [queryParams]="{fex_id:exit.fex_id,loc_id:sub.loc_id,stf_id:sub.stf_id}" >
+            <ion-button fill="solid" color="primary" [routerLink]="['./detail',exit.fex_id]" >
+              <ion-icon slot="start" name="information"></ion-icon>
+              Detail
+            </ion-button>
+            <ion-button fill="solid" color="warning" [routerLink]="['/movements']" [queryParams]="{fex_id:exit.fex_id,loc_id:sub.loc_id,stf_id:sub.stf_id}" >
               <ion-icon slot="start" name="document"></ion-icon>
               Movement Logs
             </ion-button>
