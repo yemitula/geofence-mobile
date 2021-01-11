@@ -25,6 +25,7 @@
     "@ionic-native/device": "^5.28.0",
     "@ionic-native/geofence": "^5.27.0",
     "@ionic-native/geolocation": "^5.28.0",
+    "@ionic-native/launch-navigator": "^5.30.0",
     "@ionic-native/local-notifications": "^5.27.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
@@ -33,10 +34,12 @@
     "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "@types/googlemaps": "^3.39.13",
     "cordova-android": "^8.1.0",
+    "cordova-plugin-actionsheet": "^2.3.3",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-androidx": "^2.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-badge": "^0.8.8",
+    "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-geofence": "git+https://github.com/compelling/cordova-plugin-geofence.git",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
@@ -45,6 +48,7 @@
     "moment": "^2.27.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^5.0.5",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -93,7 +97,11 @@
       "cordova-plugin-add-swift-support": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-background-geolocation": {}
+      "cordova-plugin-background-geolocation": {},
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "GOOGLE_API_KEY_FOR_ANDROID": "AIzaSyAecDISrkd_ieQ8qtNdeMtpsDcOTSbwmcU",
+        "OKHTTP_VERSION": "3.12.0"
+      }
     },
     "platforms": [
       "android"

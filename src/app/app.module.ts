@@ -21,7 +21,7 @@ import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx'
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Device } from '@ionic-native/device/ngx';
-
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,6 +37,7 @@ import { Device } from '@ionic-native/device/ngx';
     LocalNotifications,
     Geolocation,
     Device,
+    LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],

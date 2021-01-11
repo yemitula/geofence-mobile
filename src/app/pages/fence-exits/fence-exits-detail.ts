@@ -10,6 +10,8 @@ import { DeviceLinker } from 'src/app/services/device-linker-service';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationEvents, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications, ILocalNotificationActionType } from '@ionic-native/local-notifications/ngx';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-fence-exits-detail',
@@ -35,7 +37,9 @@ export class FenceExitsDetail implements OnInit {
     private ux: Ux,
     private route: ActivatedRoute,
     private geolocation: Geolocation,
-    private localNotifications: LocalNotifications
+    private localNotifications: LocalNotifications,
+    public platform:Platform,
+    private launchNavigator: LaunchNavigator
   ) {
 
     // this.customer = this.app.user;
@@ -81,6 +85,19 @@ export class FenceExitsDetail implements OnInit {
           loader.dismiss();
         }
       );
+  }
+
+  async showMap(lat,long) {
+    console.log('showMap',lat,long);
+    this.platform.ready().then(()=>{
+    this.launchNavigator.navigate([lat, long], {
+      start: "50.342847, -4.749904"
+  })
+  .then(
+    success => alert('Launched navigator'),
+    error => alert('Error launching navigator: ' + error)
+    );
+});
   }
 
 }
