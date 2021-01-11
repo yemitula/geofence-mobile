@@ -1,0 +1,58 @@
+<ion-app>
+  <!-- Header -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/profile"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Change My Password</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- Content -->
+  <ion-content transparent padding class="auth-page" style="background-image: url(assets/imgs/background/31.jpg); background-position: left bottom; background-repeat: no-repeat; background-size: contain; ">
+    <div>
+      <form [formGroup]="changePasswordForm" (submit)="changePassword()" transparent>
+        <ion-grid transparent>
+          <ion-row align-items-center transparent>
+
+            <ion-col size="12" size-md="10" push-md="1">
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Current Password</ion-label>
+                <ion-input required type="password" formControlName="current" ></ion-input>
+              </ion-item>
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating"> New Password</ion-label>
+                <ion-input required type="password" formControlName="new" ></ion-input>
+              </ion-item>
+              <!---Input field username-->
+              <ion-item no-padding input>
+                <ion-label text-size-xs position="floating">Re-enter New Password</ion-label>
+                <ion-input required type="password" formControlName="retype" ></ion-input>
+              </ion-item>
+
+              <ion-row no-padding>
+                <ion-col size="6" no-padding align-self-start>
+                  <!---Login ion-button-->
+                  <ion-button class="login-button" text-capitalize
+                  fill="outline" size="large" color="primary" [disabled]="changePasswordForm.invalid" type="submit">
+                    Update</ion-button>
+                </ion-col>
+                <!-- <ion-col size="6"  no-padding margin-top style="text-align:right; font-size: 0.8em; margin-top:2em;">
+                  <a [routerLink]="'/password-reset'">Forgot Password?</a>
+                </ion-col> -->
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </form>
+      <div class="ion-align-self-baseline ion-text-center ion-margin-bottom" style="font-size: 0.7em;">
+        <br>
+        <!-- v 0.0.3 -->
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-app>

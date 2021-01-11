@@ -1,0 +1,41 @@
+<!-- Header -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      My Profile
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- Content -->
+<ion-content>
+<!-- GOOGLE CARD --COMPONENT 2 -->
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col class="register-logo-top" padding size="12" size-md="10" push-md="1">
+        <ion-button shape="round" color="warning" [routerLink]="['./edit',user.user_id]" >
+          Change Password
+        </ion-button>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-card box-shadow class="ion-text-start"  padding-bottom>
+          <!--Card content-->
+          <ion-card-content transparent>
+            <!--Card title-->
+            <h1 title-card text-size-xs>{{user.user_name}}</h1>
+            <!--Card subtitle-->
+            <h2 text-size-sm>{{user.user_email}}</h2>
+            <ion-card-title padding-top>
+              <h2 text-size-sm>{{user.user_address}}</h2>
+            </ion-card-title>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>
+
