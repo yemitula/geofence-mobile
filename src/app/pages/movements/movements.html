@@ -15,8 +15,8 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col class="register-logo-top" padding size="12" size-md="10" push-md="1">
-        <ion-button [routerLink]="['/fence-exits']" color="success" [queryParams]="{loc_id:sub.loc_id,stf_id:sub.stf_id}" >
-         Back to Fence Exits
+        <ion-button [routerLink]="['/fence-exits/detail',sub.fex_id]" color="success" [queryParams]="{loc_id:sub.loc_id,stf_id:sub.stf_id}" >
+         Back to Exit Detail
         </ion-button>
         <!-- <ion-button shape="round" button-round (click)="showTestNotification()" >
           Test Notification

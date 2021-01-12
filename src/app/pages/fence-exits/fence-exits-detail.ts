@@ -27,6 +27,7 @@ export class FenceExitsDetail implements OnInit {
   query: string;
   id : string;
   clickSub: any;
+  appp: any;
 
   constructor(
     @Inject(AppComponent) private app: AppComponent,
@@ -89,15 +90,41 @@ export class FenceExitsDetail implements OnInit {
 
   async showMap(lat,long) {
     console.log('showMap',lat,long);
-    this.platform.ready().then(()=>{
-    this.launchNavigator.navigate([lat, long], {
-      start: "50.342847, -4.749904"
-  })
-  .then(
-    success => alert('Launched navigator'),
-    error => alert('Error launching navigator: ' + error)
-    );
-});
+    //     this.platform.ready().then(()=>{
+    //     this.launchNavigator.navigate([lat, long], {
+    //       start: "50.342847, -4.749904"
+    //   })
+    //   .then(
+    //     success => alert('Launched navigator'),
+    //     error => alert('Error launching navigator: ' + error)
+    //     );
+    // });
+    //     this.platform.ready().then(()=>{
+    // console.log('GOT HERE');
+    // this.launchNavigator.navigate("London, UK")
+    // .then(
+    //       success => alert('Launched navigator'),
+    //       error => alert('Error launching navigator: ' + error)
+    //       );
+    //   });
+
+      // this.launchNavigator.isAppAvailable(this.launchNavigator.APP.GOOGLE_MAPS, 
+        // function(isAvailable){
+        // let app;
+        // if(isAvailable){
+            this.appp = this.launchNavigator.APP.GOOGLE_MAPS;
+        // }
+        // else{
+        //     console.warn("Google Maps not available - falling back to user selection");
+        //     app = this.launchNavigator.APP.USER_SELECT;
+        // }
+        this.launchNavigator.navigate("London, UK", {
+            app: this.appp
+        });
+    // }
+    // );
   }
+
+  
 
 }
