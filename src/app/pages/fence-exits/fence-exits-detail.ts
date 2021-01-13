@@ -118,7 +118,7 @@ export class FenceExitsDetail implements OnInit {
         //     console.warn("Google Maps not available - falling back to user selection");
         //     app = this.launchNavigator.APP.USER_SELECT;
         // }
-        this.launchNavigator.navigate("London, UK", {
+        this.launchNavigator.navigate([ +lat, +long ], {
             app: this.appp
         });
     // }
