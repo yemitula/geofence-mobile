@@ -10,6 +10,7 @@ import { DeviceLinker } from 'src/app/services/device-linker-service';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationEvents, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications, ILocalNotificationActionType } from '@ionic-native/local-notifications/ngx';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 
 @Component({
   selector: 'app-movements',
@@ -34,7 +35,8 @@ export class Movements implements OnInit {
     private ux: Ux,
     private route: ActivatedRoute,
     private geolocation: Geolocation,
-    private localNotifications: LocalNotifications
+    private localNotifications: LocalNotifications,
+    private launchNavigator: LaunchNavigator
   ) {
 
     this.customer = this.app.user;
@@ -150,5 +152,13 @@ export class Movements implements OnInit {
     this.movements = filtered;
     // Whenever the filter changes, always go back to the first page
     // this.table.offset = 0;
+  }
+
+  async showMap(lat, long) {
+    console.log('showMap', lat, long);
+    
+    this.launchNavigator.navigate([+lat, +long], {
+      app: this.launchNavigator.APP.GOOGLE_MAPS
+    });
   }
 }

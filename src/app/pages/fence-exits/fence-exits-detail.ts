@@ -20,12 +20,12 @@ import { Platform } from '@ionic/angular';
 })
 export class FenceExitsDetail implements OnInit {
   // customer: any = {};
-  exit: any[] = [];
+  exit: any;
   all: any[] = [];
   sub: any;
   staff: any = {};
   query: string;
-  id : string;
+  id: string;
   clickSub: any;
   appp: any;
 
@@ -39,7 +39,7 @@ export class FenceExitsDetail implements OnInit {
     private route: ActivatedRoute,
     private geolocation: Geolocation,
     private localNotifications: LocalNotifications,
-    public platform:Platform,
+    public platform: Platform,
     private launchNavigator: LaunchNavigator
   ) {
 
@@ -49,14 +49,14 @@ export class FenceExitsDetail implements OnInit {
   ngOnInit() {
     // get id from route if set
     this.sub = this.route
-        .paramMap
-        .subscribe(pmap => {
-          this.id = pmap['params']['id'] || null;
-          if(this.id) {
-            //get exit
-            this.loadFenceExit(this.id);
-          }
-        });
+      .paramMap
+      .subscribe(pmap => {
+        this.id = pmap['params']['id'] || null;
+        if (this.id) {
+          //get exit
+          this.loadFenceExit(this.id);
+        }
+      });
   }
 
   async loadFenceExit(id) {
@@ -88,43 +88,14 @@ export class FenceExitsDetail implements OnInit {
       );
   }
 
-  async showMap(lat,long) {
-    console.log('showMap',lat,long);
-    //     this.platform.ready().then(()=>{
-    //     this.launchNavigator.navigate([lat, long], {
-    //       start: "50.342847, -4.749904"
-    //   })
-    //   .then(
-    //     success => alert('Launched navigator'),
-    //     error => alert('Error launching navigator: ' + error)
-    //     );
-    // });
-    //     this.platform.ready().then(()=>{
-    // console.log('GOT HERE');
-    // this.launchNavigator.navigate("London, UK")
-    // .then(
-    //       success => alert('Launched navigator'),
-    //       error => alert('Error launching navigator: ' + error)
-    //       );
-    //   });
-
-      // this.launchNavigator.isAppAvailable(this.launchNavigator.APP.GOOGLE_MAPS, 
-        // function(isAvailable){
-        // let app;
-        // if(isAvailable){
-            this.appp = this.launchNavigator.APP.GOOGLE_MAPS;
-        // }
-        // else{
-        //     console.warn("Google Maps not available - falling back to user selection");
-        //     app = this.launchNavigator.APP.USER_SELECT;
-        // }
-        this.launchNavigator.navigate([ +lat, +long ], {
-            app: this.appp
-        });
-    // }
-    // );
+  async showMap(lat, long) {
+    console.log('showMap', lat, long);
+    
+    this.launchNavigator.navigate([+lat, +long], {
+      app: this.launchNavigator.APP.GOOGLE_MAPS
+    });
   }
 
-  
+
 
 }

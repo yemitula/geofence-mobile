@@ -50,9 +50,6 @@ export class FenceExits implements OnInit {
           this.getStaff();
         }
       });
-    
-    // load the exit 
-    this.loadFenceExits();
   }
 
   unsub() {
@@ -120,6 +117,8 @@ export class FenceExits implements OnInit {
           if (response) {
             if (response.status == "success") {
               this.staff = response.staff;
+              // load the exits
+              this.loadFenceExits();
             } else {
               this.ux.alert(response.message, "Error!", "error");
             }

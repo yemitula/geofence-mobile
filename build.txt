@@ -5,7 +5,7 @@ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore geofence.keysto
 GFMgp$$2020
 
 
-/Users/yemitula/Library/Android/sdk/build-tools/29.0.3/zipalign -v 4 apks/geofence-release.apk apks/geofence-0.2.0.apk
+/Users/yemitula/Library/Android/sdk/build-tools/29.0.3/zipalign -v 4 apks/geofence-release.apk apks/geofence-0.3.0.apk
 
 -----------------
 

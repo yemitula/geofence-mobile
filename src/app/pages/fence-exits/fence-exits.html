@@ -46,7 +46,8 @@
           <ion-card-content transparent>
             <ion-card-title padding-top>
               <!-- <p title-card text-size-xs>{{exit?.stf_name}}</p> -->
-              <p text-size-sm>{{exit.loc_address}}</p>
+              <p>{{exit.loc_address}}</p>
+              <p text-size-sm>{{exit.fex_time_exited | date:'medium'}}</p>
             </ion-card-title>
             <ion-button fill="solid" color="primary" [routerLink]="['./detail',exit.fex_id]" >
               <ion-icon slot="start" name="information"></ion-icon>

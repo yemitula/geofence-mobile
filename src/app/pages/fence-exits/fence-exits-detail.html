@@ -15,7 +15,7 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col class="register-logo-top" padding size="12" size-md="10" push-md="1">
-        <ion-button [routerLink]="['/fence-exits']" color="success" [queryParams]="{stf_id:exit.stf_id,loc_id:exit.loc_id}" >
+        <ion-button [routerLink]="['/fence-exits']" color="success" [queryParams]="{stf_id:exit?.stf_id,loc_id:exit?.loc_id}" >
          Back to Fence Exits
         </ion-button>
         <!-- <ion-button shape="round" button-round (click)="showTestNotification()" >
@@ -28,15 +28,15 @@
             <h1>{{staff?.stf_name}}</h1>
           </ion-label>
         </ion-item-divider>
-          <ion-searchbar *ngIf="all?.length && all?.length > 1" placeholder="Search by name/email/number" (ionChange)="filterList($event)"></ion-searchbar>
+          <ion-searchbar *ngIf="all?.length && all?.length > 1" placeholder="Search by name/email/number" ></ion-searchbar>
       </ion-col>
-      <ion-col size="12" size-md="6" >
+      <ion-col size="12" size-md="6" *ngIf="exit">
         <ion-card box-shadow class="ion-text-start"  padding-bottom>
           <!--Card content-->
           <ion-card-content transparent>
             <h1 title-card text-size-xs>{{exit?.stf_name}}</h1>
             <ion-card-title padding-top>
-              <h2 text-size-sm>{{exit.loc_name}}</h2>
+              <h2 text-size-sm>{{exit?.loc_name}}</h2>
               <p title-card text-size-xs>{{exit.loc_address}}</p>
             </ion-card-title>
             <p text-size-sm><b>Exited at: </b>{{exit.fex_time_exited|date:'medium'}}</p>
@@ -45,7 +45,7 @@
             <ion-badge *ngIf="exit.fex_is_safe==0" color="danger">NOT SAFE</ion-badge>
           </ion-card-content>
           <ion-button fill="solid" color="primary" (click)="showMap(exit.fex_lat, exit.fex_long)" >
-            <ion-icon slot="start" name="map"></ion-icon>
+            <ion-icon slot= "start" name="map"></ion-icon>
             Map
           </ion-button>
           <ion-button fill="solid" color="warning" [routerLink]="['/movements']" [queryParams]="{fex_id:exit.fex_id,loc_id:exit.loc_id,stf_id:exit.stf_id}" >

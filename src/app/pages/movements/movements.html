@@ -44,9 +44,9 @@
         <ion-card box-shadow class="ion-text-start"  padding-bottom>
           <!--Card content-->
           <ion-card-content transparent>
-            <ion-card-title padding-top>
+            <ion-card-title padding-top (click)="showMap(movement.mov_lat, movement.mov_long)">
               <p title-card text-size-xs>{{movement?.stf_name}}</p>
-              <p text-size-sm>({{movement.mov_lat}},{{movement.mov_lat}})</p>
+              <p text-size-sm>({{movement.mov_lat}},{{movement.mov_long}})</p>
               <p text-size-sm>{{movement.mov_time|date:'medium'}}</p>
             </ion-card-title>
             <!-- <ion-button fill="solid" color="primary" [routerLink]="['/movement/list']" [queryParams]="{loc_id:exit.loc_id}" >
